@@ -1,0 +1,155 @@
+{
+  "title": "Dwarf Fortress",
+  "description": "Dwarf Fortress (officially called Slaves to Armok: God of Blood Chapter II: Dwarf Fortress) is a construction and management simulation and roguelike indie video game created by Bay 12 Games.",
+  "metadata": {
+    "title": "Metadata Category",
+    "description": "This is a category of descriptive name-value pairs",
+    "edition": {
+      "title": "Edition",
+      "description": "Steam Release / Classic Release"
+    },
+    "version": {
+      "title": "Version",
+      "description": "50.05"
+    },
+    "website": {
+      "title": "Website",
+      "description": "http://www.bay12games.com/dwarves/"
+    },
+    "wiki": {
+      "title": "Wiki",
+      "description": "https://dwarffortresswiki.org/"
+    }
+  },
+
+  "template": {
+    "title": "List of templates",
+    "description": "This is the factory template category",
+    "1-of-material": {
+      "title": "Pick one of material",
+      "description": "Prints one of the listed materials",
+      "sequence": [
+        {
+          "string": {
+            "items": [
+              "Wood",
+              "Stone",
+              "Bone",
+              "Metal"
+            ],
+            "picks": 1
+          }
+        }
+      ]
+    },
+    "any-percent": {
+      "title": "Pick one percent",
+      "description": "Prints a text like '36 percent' and such",
+      "sequence": [
+        {
+          "raw": "exactly"
+        },
+        {
+          "number": {
+            "min": 0,
+            "max": 100,
+            "width": 0
+          }
+        },
+        {
+          "string": {
+            "items": [
+              "percent",
+              "/100",
+              "%",
+              "of 100"
+            ],
+            "picks": 1
+          }
+        }
+      ]
+    },
+    "100-percent": {
+      "title": "Pick one percent",
+      "description": "Prints a text like '36 percent' and such",
+      "sequence": [
+        {
+          "raw": "absolutely a hundred percent"
+        }
+      ]
+    },
+    "2-of-savagery": {
+      "title": "Pick two from savagery",
+      "description": "Prints a text like 'Serene, Calm' and such",
+      "sequence": [
+        {
+          "string": {
+            "items": [
+              "Serene",
+              "Mirthful",
+              "Joyous Wilds",
+              "Calm",
+              "Wilderness",
+              "Untamed Wilds",
+              "Sinister",
+              "Haunted",
+              "Terrifying"
+            ],
+            "picks": 2
+          }
+        }
+      ]
+    }
+  },
+
+  "rules": {
+    "title": "Rules",
+    "description": "A suggestion what rules to apply to your gameplay to make it more interesting.",
+    "favourite_material": {
+      "title": "Favourite Material",
+      "description": "Wait, its horn all the way down? Always has been!",
+      "sequence": [
+        {
+          "raw": "If anything could possibly be made out of"
+        },
+        {
+          "template": "template.any-percent"
+        },
+        {
+          "raw": ", then build it out of it."
+        }
+      ]
+    },
+    "hermit_fort": {
+      "title": "Hermit Fort",
+      "description": "It has nothing to do with you, i just rather want to be alone.",
+      "sequence": [
+        {
+          "raw": "Start in any way you want, but expel 6 of your seven dwarfs and run the fort on your own."
+        }
+      ]
+    },
+    "biome-and-material": {
+      "title": "Where and how many?",
+      "description": "It has nothing to do with you, i just rather want to be alone.",
+      "sequence": [
+        {
+          "raw": "Start in a"
+        },
+        {
+          "template": "template.2-of-savagery"
+        },
+        {
+          "raw": "biome and have a strict population cap of"
+        },
+        {
+          "number": {
+            "min": 50,
+            "max": 500,
+            "width": 0
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,109 @@
+{
+  "title": "Cataclysm: Dark Days Ahead",
+  "description": "Cataclysm: Dark Days Ahead (CDDA) is an open-source survival horror roguelike video game. Cataclysm: Dark Days Ahead is a fork of the original game Cataclysm.",
+  "metadata": {
+    "title": "Metadata Category",
+    "description": "This is a category of descriptive name-value pairs",
+    "version": {
+      "title": "Version",
+      "description": "0.F-3 Frank-3"
+    },
+    "website": {
+      "title": "Website",
+      "description": "https://cataclysmdda.org/"
+    },
+    "wiki": {
+      "title": "Wiki",
+      "description": "http://cddawiki.chezzo.com/cdda_wiki/index.php/Main_Page"
+    }
+  },
+
+  "template": {
+    "title": "List of templates",
+    "description": "This is the factory template category",
+    "1-of-material": {
+      "title": "Pick one of material",
+      "description": "Prints one of the listed materials",
+      "sequence": [
+        {
+          "string": {
+            "items": [
+              "Wood",
+              "Stone",
+              "Bone",
+              "Metal"
+            ],
+            "picks": 1
+          }
+        }
+      ]
+    },
+    "any-percent": {
+      "title": "Pick one percent",
+      "description": "Prints a text like '36 percent' and such",
+      "sequence": [
+        {
+          "number": {
+            "min": 0,
+            "max": 100,
+            "width": 0
+          }
+        },
+        {
+          "raw": "percent"
+        }
+      ]
+    },
+    "2-of-savagery": {
+      "title": "Pick two from savagery",
+      "description": "Prints a text like 'Serene, Calm' and such",
+      "sequence": [
+        {
+          "string": {
+            "items": [
+              "Serene",
+              "Mirthful",
+              "Joyous Wilds",
+              "Calm",
+              "Wilderness",
+              "Untamed Wilds",
+              "Sinister",
+              "Haunted",
+              "Terrifying"
+            ],
+            "picks": 2
+          }
+        }
+      ]
+    }
+  },
+
+  "rules": {
+    "title": "Rules",
+    "description": "A suggestion what rules to apply to your gameplay",
+    "favourite_material": {
+      "title": "No Guns",
+      "description": "",
+      "sequence": [
+        {
+          "raw": "If anything could possibly be made out of"
+        },
+        {
+          "template": "1-of-material"
+        },
+        {
+          "raw": ", then build it out of it."
+        }
+      ]
+    },
+    "hermit_fort": {
+      "title": "Vantastic!",
+      "description": "",
+      "sequence": [
+        {
+          "raw": "Start in any way you want, but expel 6 of your seven dwarfs and run the fort on your own."
+        }
+      ]
+    }
+  }
+}
