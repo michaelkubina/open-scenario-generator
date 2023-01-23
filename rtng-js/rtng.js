@@ -1,18 +1,19 @@
-/*
- *
- * this is part of rtng.js
+/**
  * 
- * */
-
+ * RTNG.js is a "Random Text and Number Generator"
+ * written by Michael Kubina
+ * 
+ * https://github.com/michaelkubina/open-scenario-generator
+ * 
+ * 2023-01-23
+ * 
+ */
 class rtng {
 
-    /*
-     * 
-     * Constructor
-     * 
-     * */
-
-    // create object and load JSON as promise
+    /**
+     * create object and load JSON as promise
+     * @param {any} url
+     */
     constructor(url) {
         this.promise = fetch(url)
             .then((response) => response.json())
@@ -23,14 +24,12 @@ class rtng {
             });
     }
 
-    /*
-     * 
-     * Path Interpretor
-     * 
-     * */
-
-    // https://stackoverflow.com/questions/38640072/how-to-get-nested-objects-in-javascript-by-an-string-as-a-bracket-notation
-    // get the value of an object trough dot.notation and bracket[notation]
+    /**
+     * get the value of an object trough dot.notation and bracket[notation]
+     * https://stackoverflow.com/questions/38640072/how-to-get-nested-objects-in-javascript-by-an-string-as-a-bracket-notation
+     * @param {any} path
+     * @param {any} obj
+     */
     getValue(path, obj) {
         let value = path.replace(/\[([^\]]+)]/g, '.$1').split('.').reduce(function (o, p) {
             return o[p];
@@ -40,13 +39,11 @@ class rtng {
         return value;
     }
 
-    /*
-     *
-     * Boolean Checks
-     * 
-     * */
-
-    // checks if element has specific name
+    /**
+     * checks if element has specific name
+     * @param {any} path
+     * @param {any} name
+     */
     isElement(path, name) {
         // check wether it is .title, .description, .anything etc.
         if (path.endsWith('.' + name)) {
@@ -55,7 +52,10 @@ class rtng {
         return false;
     }
 
-    // checks if element is object-element or a value/literal
+    /**
+     * checks if element is object-element or a value/literal
+     * @param {any} path
+     */
     async isObject(path) {
         // check wether it is new hierarchy
         if (typeof this.getValue(path, await this.promise) === 'object' && Array.isArray(this.getValue(path, await this.promise)) == false) {
@@ -66,24 +66,27 @@ class rtng {
         return false;
     }
 
-    // checks if element has a sequence-list
+    /**
+     * checks if element has a sequence-list
+     * @param {any} path
+     */
     isSequence(path) {
         return this.isElement(path, 'sequence');
     }
 
-    /*
-     * 
-     * Value and Object Retrieval
-     * 
-     * */
-
-    // get the value of a element from a path
+    /**
+     * get the value of a element from a path
+     * @param {any} path
+     */
     async getElement(path) {
         //console.log(this.getValue(path, await this.promise));
         return (this.getValue(path, await this.promise));
     }
 
-    // returns a path to all elements at the given hierarchy
+    /**
+     * returns a path to all elements at the given hierarchy
+     * @param {any} path
+     */
     async listElements(path) {
         // if empty path, then return keys from highest hierarchy
         if (path === '') {
@@ -92,7 +95,7 @@ class rtng {
         let target = this.getValue(path, await this.promise);
         // prevent to list string as indexed array
         if (typeof target === 'string' || target instanceof String) {
-            return;
+            return typeof target;
         } else {
             // get all keys from path
             let allElements = Object.keys(target);
@@ -103,15 +106,9 @@ class rtng {
         }
     }
 
-    /*
-     * 
-     * PARSING
-     * 
-     * */
-
     /**
      * Returns the parsed raw string
-     * @param {any} object
+     * @param {raw} object
      */
     async parseRaw(object) {
         console.log(">>> BEGIN PARSING RAW");
@@ -122,6 +119,10 @@ class rtng {
         return raw;
     }
 
+    /**
+     * 
+     * @param {any} object
+     */
     async parseString(object) {
         console.log(">>> BEGIN PARSING STRING");
 
@@ -194,38 +195,32 @@ class rtng {
             else if (Object.keys(parsable_element) == 'template') {
                 console.log(parsable_element + ' is a template');
                 console.log(parsable_element.template);
+                // TODO: make sure not to fall into infinite loop!!!
                 output += await this.parseSequence(parsable_element.template + '.sequence');
             }
-
-
-            // https://stackoverflow.com/questions/46953029/can-i-check-for-object-properties-in-a-switch-statement
-            /*switch (true) {
-                case (Object.keys(parsable_element) == 'raw'):
-                    output += await this.parseRaw(parsable_element);
-                    break;
-                case (Object.keys(parsable_element) == 'string'):
-                    // do something
-                    break;
-            }*/
-
-            /*if (current.isElement(sub_element, 'title')) {
-                $("#rules").append('<h1></h1>').find('h1:last-child').text(await current.getElement(sub_element, 'title'));
-            } else if (current.isElement(sub_element, 'description')) {
-                $("#rules").append('<h6></h6>').find('h6:last-child').text(await current.getElement(sub_element, 'description'));
-            } else if (await current.isObject(sub_element)) {
-                $("#rules").append('<p></p>').find('p:last-child').text(await current.getElement(sub_element + '.title', 'title'));
-            }*/
         }
-        // loop through sequence and concat
-            // parsed raw OR
-
-            // parsed string OR
-
-            // parsed number OR
-
-            // parse template
-            // & make sure not to fall into infinite loop!!!
         console.log('End Parsing sequence');
         return output;
+    }
+
+    /**
+     * checks if element has a sequence-list
+     * @param {any} path
+     */
+    async isTemplate(path) {
+        console.log("START isTemplate");
+        //console.log(await this.getElement(path));
+
+        // get a list of all elements for the path
+        let elements = await this.listElements(path);
+
+        // if its actually a list
+        if (Array.isArray(await elements)) {
+            //let filtered = arr.filter(fruit => !fruit.endsWith('berry'));
+        }
+
+        console.log(await this.listElements(path));
+        console.log("END isTemplate");
+        return false;
     }
 }

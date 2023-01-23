@@ -129,6 +129,13 @@
         }
       ]
     },
+    "lazy": {
+      "sequence": [
+        {
+          "raw": "smallest possible template"
+        }
+      ]
+    },
     "biome-and-material": {
       "title": "Where and how many?",
       "description": "It has nothing to do with you, i just rather want to be alone.",

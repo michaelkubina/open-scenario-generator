@@ -24,6 +24,13 @@ $(document).ready(async function () {
     console.log(await current.getElement('rules.hermit_fort.sequence')); // array
     */
 
+    // test for isTemplate
+    console.log(await current.isTemplate('rules')); // 
+    console.log(await current.isTemplate('rules.title')); // 
+    console.log(await current.isTemplate('rules.description')); // 
+    console.log(await current.isTemplate('rules.hermit_fort')); // 
+    console.log(await current.isTemplate('rules.hermit_fort.sequence')); // 
+
     /*
      *
      * Game Title
@@ -67,9 +74,6 @@ $(document).ready(async function () {
                 else if (current.isElement(sub_element, 'description')) {
                     $("#rules").append('<p class="lead"></p>').find('p:last-child').text(await current.getElement(sub_element, 'description'));
                 }
-                /*else if (await current.isObject(sub_element)) {
-                    $("#rules").append('<p></p>').find('p:last-child').text(await current.getElement(sub_element + '.title', 'title'));
-                }*/
                 else if (await current.isSequence(sub_element)) {
                     $("#rules").append('<p></p>').find('p:last-child').text(await current.parseSequence(sub_element));
                 }
