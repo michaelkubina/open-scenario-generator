@@ -109,6 +109,10 @@ class rtng {
      * 
      * */
 
+    /**
+     * Returns the parsed raw string
+     * @param {any} object
+     */
     async parseRaw(object) {
         console.log(">>> BEGIN PARSING RAW");
 
@@ -136,6 +140,10 @@ class rtng {
         return string;
     }
 
+    /**
+     * 
+     * @param {any} object
+     */
     async parseNumber(object) {
         console.log(">>> BEGIN PARSING NUMBER");
 
@@ -149,6 +157,10 @@ class rtng {
         return result;
     }
 
+    /**
+     * 
+     * @param {any} path
+     */
     async parseSequence(path) { // e.g. rules.hermit_fort.sequence
         let output = '';
 
@@ -159,6 +171,9 @@ class rtng {
         console.log(parsables);
 
         for await (const parsable_item of parsables) {
+            // add whitespace delimiter
+            output += ' ';
+
             console.log('Current parsable item:');
             let parsable_element = this.getValue(parsable_item, await this.promise);
             console.log(parsable_element);

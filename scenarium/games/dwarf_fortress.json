@@ -148,6 +148,9 @@
             "max": 500,
             "width": 0
           }
+        },
+        {
+          "template": "rules.favourite_material"
         }
       ]
     }
