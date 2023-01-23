@@ -12,7 +12,7 @@ $(document).ready(async function () {
     console.log(await current.isObject('rules.title')); // false
     console.log(await current.isObject('rules.description')); // false
     console.log(await current.isObject('rules.hermit_fort')); // true
-    console.log(await current.isObject('rules.hermit_fort.sequence')); // true
+    console.log(await current.isObject('rules.hermit_fort.@sequence')); // true
     */
 
     // test for getElement
@@ -21,15 +21,27 @@ $(document).ready(async function () {
     console.log(await current.getElement('rules.title')); // string
     console.log(await current.getElement('rules.description')); // string
     console.log(await current.getElement('rules.hermit_fort')); // object
-    console.log(await current.getElement('rules.hermit_fort.sequence')); // array
+    console.log(await current.getElement('rules.hermit_fort.@sequence')); // array
     */
 
     // test for isTemplate
-    console.log(await current.isTemplate('rules')); // 
-    console.log(await current.isTemplate('rules.title')); // 
-    console.log(await current.isTemplate('rules.description')); // 
-    console.log(await current.isTemplate('rules.hermit_fort')); // 
-    console.log(await current.isTemplate('rules.hermit_fort.sequence')); // 
+    /*
+    console.log(await current.isTemplate('rules')); // false
+    console.log(await current.isTemplate('rules.lazy')); // true
+    console.log(await current.isTemplate('rules.title')); // false
+    console.log(await current.isTemplate('rules.description')); // false
+    console.log(await current.isTemplate('rules.hermit_fort')); // true
+    console.log(await current.isTemplate('rules.hermit_fort.@sequence')); // false -> is already @sequence
+    */
+
+    // test for listElements
+    console.log(await current.listElements('')); // [ "title", "description", "metadata", "template", "rules" ]
+    console.log(await current.listElements('rules')); // [ "rules.title", "rules.description", "rules.favourite_material", "rules.hermit_fort", "rules.lazy", "rules.biome-and-material" ]
+    console.log(await current.listElements('rules.lazy')); // [ "rules.lazy.@sequence" ]
+    console.log(await current.listElements('rules.title')); // []
+    console.log(await current.listElements('rules.description')); // []
+    console.log(await current.listElements('rules.hermit_fort')); // [ "rules.hermit_fort.title", "rules.hermit_fort.description", "rules.hermit_fort.@sequence" ]
+    console.log(await current.listElements('rules.hermit_fort.@sequence')); // [ "rules.hermit_fort.@sequence.0" ]
 
     /*
      *
@@ -75,6 +87,9 @@ $(document).ready(async function () {
                     $("#rules").append('<p class="lead"></p>').find('p:last-child').text(await current.getElement(sub_element, 'description'));
                 }
                 else if (await current.isSequence(sub_element)) {
+                    $("#rules").append('<p></p>').find('p:last-child').text(await current.parseSequence(sub_element));
+                }
+                else if (await current.isTemplate(sub_element)) {
                     $("#rules").append('<p></p>').find('p:last-child').text(await current.parseSequence(sub_element));
                 }
             }

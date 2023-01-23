@@ -24,7 +24,7 @@
     "1-of-material": {
       "title": "Pick one of material",
       "description": "Prints one of the listed materials",
-      "sequence": [
+      "@sequence": [
         {
           "string": {
             "items": [
@@ -41,7 +41,7 @@
     "any-percent": {
       "title": "Pick one percent",
       "description": "Prints a text like '36 percent' and such",
-      "sequence": [
+      "@sequence": [
         {
           "number": {
             "min": 0,
@@ -57,7 +57,7 @@
     "2-of-savagery": {
       "title": "Pick two from savagery",
       "description": "Prints a text like 'Serene, Calm' and such",
-      "sequence": [
+      "@sequence": [
         {
           "string": {
             "items": [
@@ -84,7 +84,7 @@
     "favourite_material": {
       "title": "No Guns",
       "description": "",
-      "sequence": [
+      "@sequence": [
         {
           "raw": "If anything could possibly be made out of"
         },
@@ -99,7 +99,7 @@
     "hermit_fort": {
       "title": "Vantastic!",
       "description": "",
-      "sequence": [
+      "@sequence": [
         {
           "raw": "Start in any way you want, but expel 6 of your seven dwarfs and run the fort on your own."
         }

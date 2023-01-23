@@ -28,7 +28,7 @@
     "1-of-material": {
       "title": "Pick one of material",
       "description": "Prints one of the listed materials",
-      "sequence": [
+      "@sequence": [
         {
           "string": {
             "items": [
@@ -45,7 +45,7 @@
     "any-percent": {
       "title": "Pick one percent",
       "description": "Prints a text like '36 percent' and such",
-      "sequence": [
+      "@sequence": [
         {
           "raw": "exactly"
         },
@@ -72,7 +72,7 @@
     "100-percent": {
       "title": "Pick one percent",
       "description": "Prints a text like '36 percent' and such",
-      "sequence": [
+      "@sequence": [
         {
           "raw": "absolutely a hundred percent"
         }
@@ -81,7 +81,7 @@
     "2-of-savagery": {
       "title": "Pick two from savagery",
       "description": "Prints a text like 'Serene, Calm' and such",
-      "sequence": [
+      "@sequence": [
         {
           "string": {
             "items": [
@@ -108,7 +108,7 @@
     "favourite_material": {
       "title": "Favourite Material",
       "description": "Wait, its horn all the way down? Always has been!",
-      "sequence": [
+      "@sequence": [
         {
           "raw": "If anything could possibly be made out of"
         },
@@ -123,14 +123,14 @@
     "hermit_fort": {
       "title": "Hermit Fort",
       "description": "It has nothing to do with you, i just rather want to be alone.",
-      "sequence": [
+      "@sequence": [
         {
           "raw": "Start in any way you want, but expel 6 of your seven dwarfs and run the fort on your own."
         }
       ]
     },
     "lazy": {
-      "sequence": [
+      "@sequence": [
         {
           "raw": "smallest possible template"
         }
@@ -139,7 +139,7 @@
     "biome-and-material": {
       "title": "Where and how many?",
       "description": "It has nothing to do with you, i just rather want to be alone.",
-      "sequence": [
+      "@sequence": [
         {
           "raw": "Start in a"
         },

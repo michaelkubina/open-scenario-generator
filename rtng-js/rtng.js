@@ -67,11 +67,11 @@ class rtng {
     }
 
     /**
-     * checks if element has a sequence-list
+     * checks if element has a @sequence
      * @param {any} path
      */
     isSequence(path) {
-        return this.isElement(path, 'sequence');
+        return this.isElement(path, '@sequence');
     }
 
     /**
@@ -95,7 +95,7 @@ class rtng {
         let target = this.getValue(path, await this.promise);
         // prevent to list string as indexed array
         if (typeof target === 'string' || target instanceof String) {
-            return typeof target;
+            return [];
         } else {
             // get all keys from path
             let allElements = Object.keys(target);
@@ -162,10 +162,10 @@ class rtng {
      * 
      * @param {any} path
      */
-    async parseSequence(path) { // e.g. rules.hermit_fort.sequence
+    async parseSequence(path) { // e.g. rules.hermit_fort.@sequence
         let output = '';
 
-        console.log('Begin parsing sequence');
+        console.log('Begin parsing @sequence');
 
         let parsables = await this.listElements(path);
         console.log('All parsables:');
@@ -196,31 +196,29 @@ class rtng {
                 console.log(parsable_element + ' is a template');
                 console.log(parsable_element.template);
                 // TODO: make sure not to fall into infinite loop!!!
-                output += await this.parseSequence(parsable_element.template + '.sequence');
+                output += await this.parseSequence(parsable_element.template + '.@sequence');
             }
         }
-        console.log('End Parsing sequence');
+        console.log('End Parsing @sequence');
         return output;
     }
 
     /**
-     * checks if element has a sequence-list
+     * checks if element has a @sequence
      * @param {any} path
      */
     async isTemplate(path) {
-        console.log("START isTemplate");
-        //console.log(await this.getElement(path));
-
-        // get a list of all elements for the path
+        // get a list of paths of all sub-elements for a given path
         let elements = await this.listElements(path);
 
-        // if its actually a list
+        // if it's actually a list
         if (Array.isArray(await elements)) {
-            //let filtered = arr.filter(fruit => !fruit.endsWith('berry'));
+            // look if an item is a @sequence
+            for await (const item of elements)
+                if (item.endsWith('.@sequence')) {
+                    return true;
+                }
         }
-
-        console.log(await this.listElements(path));
-        console.log("END isTemplate");
         return false;
     }
 }

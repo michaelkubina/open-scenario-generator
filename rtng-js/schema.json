@@ -1,42 +1,47 @@
 {
-  "primitive-types": [
-    // a comment object
-    {
-      "comment": "This is a comment, that wont be parsed, unless called directly or in debug mode"
-    },
+  "custom_element": {
+    // a @sequence marks a custom_element as a template
+    // and is the lowest element in a category
+    "@sequence": [
+      // a comment object
+      {
+        "comment": "This is a comment, that wont be parsed, unless called directly or in debug mode"
+      },
 
-    // a single "raw" string object
-    {
-      "raw": "This is a raw string"
-    },
+      // a single "raw" string object
+      {
+        "raw": "This is a raw string"
+      },
 
-    // one or more random strings in a set of pickable items
-    {
-      "string": {
-        "items": [
-          "One",
-          "Two",
-          "Three",
-          "Four"
-        ],
-        "picks": 1 // @integer OR "@template"
+      // one or more random strings in a set of pickable items
+      {
+        "string": {
+          "items": [
+            "One",
+            "Two",
+            "Three",
+            "Four"
+          ],
+          "picks": 1 // @integer OR "@template"
+        }
+      },
+
+      // a random number or range object
+      {
+        "number": {
+          "min": 0, // @integer OR "@template"
+          "max": 0, // @integer OR "@template"
+          "width": 0 // @integer OR "@template"
+        }
+      },
+
+      // a call to a custom template
+      {
+        "template": "path.to.your.template"
       }
-    },
-
-    // a random number or range object
-    {
-      "number": {
-        "min": 0, // @integer OR "@template"
-        "max": 0, // @integer OR "@template"
-        "width": 0 // @integer OR "@template"
-      }
-    },
-
-    // a call to a custom template
-    {
-      "template": "path.to.your.template"
-    }
-  ],
+    ]
+  },
+  
 
   // a category can consist of a title, details, subcategories and texts
   "category": {
@@ -54,7 +59,7 @@
   "text": {
     "title": "",
     "description": "",
-    "sequence": [
+    "@sequence": [
       // any of the 5 data primitives
     ]
   },
@@ -68,7 +73,7 @@
     "template_1": {
       "title": "This is the long name of an actual template",
       "description": "Allowed",
-      "sequence": [
+      "@sequence": [
         {
           "comment": "Allowed" // optional
         },
@@ -94,7 +99,7 @@
       "template_from_subcategory_1": {
         "title": "The subcategory title",
         "description": "The description of the subcategory",
-        "sequence": [
+        "@sequence": [
           {
             "comment": "To do... never mind"
           }
@@ -110,7 +115,7 @@
     "category_item_1": {
       "title": "A custom text",
       "description": "this text consits of an",
-      "sequence": [
+      "@sequence": [
         {
 
         }
