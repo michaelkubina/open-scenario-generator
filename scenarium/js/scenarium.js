@@ -101,12 +101,12 @@ $(document).ready(async function () {
                 else if (current.isElement(sub_element, 'description')) {
                     $("#rules").append('<p class="lead"></p>').find('p:last-child').text(await current.getElement(sub_element, 'description'));
                 }
-                /*else if (await current.isSequence(sub_element)) {
-                    $("#rules").append('<p></p>').find('p:last-child').text(await current.parseSequence(sub_element));
-                }*/
-                else if (await current.isTemplate(sub_element)) {
+                else if (await current.isSequence(sub_element)) {
                     $("#rules").append('<p></p>').find('p:last-child').text(await current.parseSequence(sub_element));
                 }
+                /*else if (await current.isTemplate(sub_element)) {
+                    $("#rules").append('<p></p>').find('p:last-child').text(await current.parseSequence(sub_element));
+                }*/
             }
         }
         console.log('<<< ELEMENT <<<');
