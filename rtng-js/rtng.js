@@ -112,6 +112,7 @@ class rtng {
      */
     async parseRaw(object) {
         console.log(">>> BEGIN PARSING RAW");
+        console.log(object);
 
         let raw = object.raw + " "
 
@@ -184,7 +185,7 @@ class rtng {
                 console.log(parsable_element + ' is a raw');
                 output += await this.parseRaw(parsable_element);
             }
-            else if (Object.keys(parsable_element) == 'string') {
+            else if (Object.keys(parsable_element) == '$_string') {
                 console.log(parsable_element + ' is a string');
                 output += await this.parseString(parsable_element);
             }
@@ -213,12 +214,28 @@ class rtng {
 
         // if it's actually a list
         if (Array.isArray(await elements)) {
-            // look if an item is a @sequence
+            // look if it has a @sequenceitem
             for await (const item of elements)
                 if (item.endsWith('.@sequence')) {
                     return true;
                 }
         }
         return false;
+    }
+
+    /**
+     * Parse a template from a path, returns the pared text
+     * @param {any} path
+     */
+    async parseTemplate(path) {
+        // debug stuff
+        console.log('>>> parseTemplate(' + path + ')');
+
+        if (await this.isTemplate(path)) {
+            return await this.parseSequence(path + '.@sequence');
+        }
+        
+        console.log('<<< parseTemplate(' + path + ')');
+        return output;
     }
 }

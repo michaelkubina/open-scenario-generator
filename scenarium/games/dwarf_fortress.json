@@ -1,26 +1,10 @@
 {
   "title": "Dwarf Fortress",
   "description": "Dwarf Fortress (officially called Slaves to Armok: God of Blood Chapter II: Dwarf Fortress) is a construction and management simulation and roguelike indie video game created by Bay 12 Games.",
-  "metadata": {
-    "title": "Metadata Category",
-    "description": "This is a category of descriptive name-value pairs",
-    "edition": {
-      "title": "Edition",
-      "description": "Steam Release / Classic Release"
-    },
-    "version": {
-      "title": "Version",
-      "description": "50.05"
-    },
-    "website": {
-      "title": "Website",
-      "description": "http://www.bay12games.com/dwarves/"
-    },
-    "wiki": {
-      "title": "Wiki",
-      "description": "https://dwarffortresswiki.org/"
-    }
-  },
+  "homepage": "http://www.bay12games.com/dwarves/",
+  "wiki": "https://dwarffortresswiki.org/",
+  "discord": "https://discord.com/invite/kitfoxgames",
+  "reddit": "https://www.reddit.com/r/dwarffortress",
 
   "template": {
     "title": "List of templates",

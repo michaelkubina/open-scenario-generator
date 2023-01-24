@@ -35,6 +35,7 @@ $(document).ready(async function () {
     */
 
     // test for listElements
+    /*
     console.log(await current.listElements('')); // [ "title", "description", "metadata", "template", "rules" ]
     console.log(await current.listElements('rules')); // [ "rules.title", "rules.description", "rules.favourite_material", "rules.hermit_fort", "rules.lazy", "rules.biome-and-material" ]
     console.log(await current.listElements('rules.lazy')); // [ "rules.lazy.@sequence" ]
@@ -42,15 +43,20 @@ $(document).ready(async function () {
     console.log(await current.listElements('rules.description')); // []
     console.log(await current.listElements('rules.hermit_fort')); // [ "rules.hermit_fort.title", "rules.hermit_fort.description", "rules.hermit_fort.@sequence" ]
     console.log(await current.listElements('rules.hermit_fort.@sequence')); // [ "rules.hermit_fort.@sequence.0" ]
+    */
 
     /*
      *
-     * Game Title
+     * Game Matadata Banner
      * 
      * */
 
     $("#title").text(await current.getElement('title'));
     $("#description").text(await current.getElement('description'));
+    $("#homepage").attr("href", await current.getElement('homepage'));
+    $("#wiki").attr("href", await current.getElement('wiki'));
+    $("#discord").attr("href", await current.getElement('discord'));
+    $("#reddit").attr("href", await current.getElement('reddit'));
 
     /*
      * 
@@ -65,7 +71,15 @@ $(document).ready(async function () {
     // async for loop
     // https://stackoverflow.com/questions/37576685/using-async-await-with-a-foreach-loop
     for await (const element of elements) {
-        //console.log(element);
+        // debugging stuff
+        console.log('>>> ELEMENT >>>');
+        console.log(element);
+        console.log('isTemplate(' + element + ')');
+        console.log(await current.isTemplate(element));
+        if (await current.isTemplate(element)) {
+            console.log(await current.getElement(element));
+        }
+
         if (current.isElement(element, 'title')) {
             $("#rules").append('<h1 class="display-5"></h1>').find('h1:last-child').text(await current.getElement(element, 'title'));
         }
@@ -79,20 +93,22 @@ $(document).ready(async function () {
 
         if (sub_elements) {
             for await (const sub_element of sub_elements) {
-                //console.log(sub_element);
+                console.log('SUBELEMENT');
+                console.log(sub_element);
                 if (current.isElement(sub_element, 'title')) {
                     $("#rules").append('<h1 class="display-6"></h1>').find('h1:last-child').text(await current.getElement(sub_element, 'title'));
                 }
                 else if (current.isElement(sub_element, 'description')) {
                     $("#rules").append('<p class="lead"></p>').find('p:last-child').text(await current.getElement(sub_element, 'description'));
                 }
-                else if (await current.isSequence(sub_element)) {
+                /*else if (await current.isSequence(sub_element)) {
                     $("#rules").append('<p></p>').find('p:last-child').text(await current.parseSequence(sub_element));
-                }
+                }*/
                 else if (await current.isTemplate(sub_element)) {
                     $("#rules").append('<p></p>').find('p:last-child').text(await current.parseSequence(sub_element));
                 }
             }
         }
+        console.log('<<< ELEMENT <<<');
     }
 });
