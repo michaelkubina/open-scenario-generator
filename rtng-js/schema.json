@@ -9,9 +9,29 @@
       },
 
       // a single "raw" string object
+      // KILL
       {
         "raw": "This is a raw string"
       },
+      // IN FAVOUR OF
+      {
+        "@string": [ "This is an example string" ]
+      },
+      // BECAUSE IT'S EASIER TO EXPAND
+      {
+        "@string": [ "This is an example string", "This example shows a string" ]
+      },
+      // AND AUTOMATICALLY DEFAULTS TO @pick = 1 and @uniq = 1
+      // @string : a list of strings
+      {
+        "@string": [ "This is a raw string", "This is another raw string" ],
+        "@pick": 1,
+        "@unique": true
+        // @punctuation: ",", ==> A, B, C, D
+        // @conjunction: "and" ==> A, B, C and D
+
+      },
+
 
       // one or more random strings in a set of pickable items
       {

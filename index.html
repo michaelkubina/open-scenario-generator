@@ -61,27 +61,31 @@
             </nav>
         </div>
         <div class="col-lg-8 mx-auto p-3 py-md-3">
-            <header class="d-flex align-items-center pb-3">
-                <div>
+            <header>
+                <div class="alert alert-light" role="alert">
                     <h1 id="title" class="display-1"></h1>
                     <p id="description" class="lead"></p>
-                    <div class="btn-group" role="group" aria-label="Basic example">
-                        <button type="button" class="btn btn-outline-primary">Homepage</button>
-                        <button type="button" class="btn btn-outline-primary">Wiki</button>
-                        <button type="button" class="btn btn-outline-primary">Discord</button>
-                    </div>
-                    <div class="btn-group ml-5" role="group" aria-label="Basic example">
-                        <button type="button" class="btn btn-primary">Generate Scenario</button>
+                    <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
+                        <div class="btn-group" role="group" aria-label="Second group">
+                            <button type="button" class="btn btn-outline-info">Homepage</button>
+                            <button type="button" class="btn btn-outline-info">Wiki</button>
+                            <button type="button" class="btn btn-outline-info">Discord</button>
+                            <button type="button" class="btn btn-outline-info">Reddit</button>
+                        </div>
                     </div>
                 </div>
             </header>
-
             <main>
-                <div id="rules">
-
+                <div class="alert alert-primary" role="alert">
+                    <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
+                        <div class="btn-group" role="group" aria-label="First group">
+                            <button type="button" class="btn btn-primary">Generate Scenario</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="alert alert-dark" role="alert" id="rules">
                 </div>
             </main>
-
             <footer class="pt-5 my-5 text-muted border-top">
                 Open Scenario Generator by Michael Kubina (last update: 2023-01-23)
             </footer>
