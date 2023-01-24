@@ -1,0 +1,165 @@
+{
+  "title": "Testing & Debugging",
+  "description": "This page tests core features of the RTNG.js",
+  "homepage": "http://www.bay12games.com/dwarves/",
+  "wiki": "https://dwarffortresswiki.org/",
+  "discord": "https://discord.com/invite/kitfoxgames",
+  "reddit": "https://www.reddit.com/r/dwarffortress",
+
+  "primitives": {
+    "title": "Declare Primitives",
+    "description": "A variety of differently configured primitives",
+    "1-from-list": {
+      "title": "1 from list",
+      "description": "Pick one item from a list",
+      "@sequence": [
+        {
+          "string": [ "Wood", "Stone", "Bone", "Metal" ],
+
+          "picks": 1,
+          "unique": true,
+          "punctuation": ",",
+          "conjunction": "and"
+        }
+      ]
+    },
+    "2-unique-from-list": {
+      "title": "2 from list",
+      "description": "Pick two unique items from a list, so it does not repeat.",
+      "@sequence": [
+        {
+          "string": [ "Wood", "Stone", "Bone", "Metal" ],
+
+          "picks": 2,
+          "unique": true,
+          "punctuation": ",",
+          "conjunction": "and"
+        }
+      ]
+    },
+    "any-percent": {
+      "title": "Pick one percent",
+      "description": "Prints a text like '36 percent' and such",
+      "@sequence": [
+        {
+          "raw": "exactly"
+        },
+        {
+          "min": 0,
+          "max": 100,
+
+          "picks": 1,
+          "width": 0,
+          "steps": 0.5,
+          "overflow": true,
+          "unique": true,
+          "punctuation": ",",
+          "conjunction": "and"
+        },
+        {
+          "string": {
+            "items": [
+              "percent",
+              "/100",
+              "%",
+              "of 100"
+            ],
+            "picks": 1
+          }
+        }
+      ]
+    },
+    "100-percent": {
+      "title": "Pick one percent",
+      "description": "Prints a text like '36 percent' and such",
+      "@sequence": [
+        {
+          "raw": "absolutely a hundred percent"
+        }
+      ]
+    },
+    "2-of-savagery": {
+      "title": "Pick two from savagery",
+      "description": "Prints a text like 'Serene, Calm' and such",
+      "@sequence": [
+        {
+          "string": {
+            "items": [
+              "Serene",
+              "Mirthful",
+              "Joyous Wilds",
+              "Calm",
+              "Wilderness",
+              "Untamed Wilds",
+              "Sinister",
+              "Haunted",
+              "Terrifying"
+            ],
+            "picks": 2
+          }
+        }
+      ]
+    }
+  },
+
+  "rules": {
+    "title": "Rules",
+    "description": "A suggestion what rules to apply to your gameplay to make it more interesting.",
+    "favourite_material": {
+      "title": "Favourite Material",
+      "description": "Wait, its horn all the way down? Always has been!",
+      "@sequence": [
+        {
+          "raw": "If anything could possibly be made out of"
+        },
+        {
+          "template": "template.any-percent"
+        },
+        {
+          "raw": ", then build it out of it."
+        }
+      ]
+    },
+    "hermit_fort": {
+      "title": "Hermit Fort",
+      "description": "It has nothing to do with you, i just rather want to be alone.",
+      "@sequence": [
+        {
+          "raw": "Start in any way you want, but expel 6 of your seven dwarfs and run the fort on your own."
+        }
+      ]
+    },
+    "lazy": {
+      "@sequence": [
+        {
+          "raw": "smallest possible template"
+        }
+      ]
+    },
+    "biome-and-material": {
+      "title": "Where and how many?",
+      "description": "It has nothing to do with you, i just rather want to be alone.",
+      "@sequence": [
+        {
+          "raw": "Start in a"
+        },
+        {
+          "template": "template.2-of-savagery"
+        },
+        {
+          "raw": "biome and have a strict population cap of"
+        },
+        {
+          "number": {
+            "min": 50,
+            "max": 500,
+            "width": 0
+          }
+        },
+        {
+          "template": "rules.favourite_material"
+        }
+      ]
+    }
+  }
+}
