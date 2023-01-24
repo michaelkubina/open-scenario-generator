@@ -185,7 +185,7 @@ class rtng {
                 console.log(parsable_element + ' is a raw');
                 output += await this.parseRaw(parsable_element);
             }
-            else if (Object.keys(parsable_element) == '$_string') {
+            else if (Object.keys(parsable_element) == 'string') {
                 console.log(parsable_element + ' is a string');
                 output += await this.parseString(parsable_element);
             }
