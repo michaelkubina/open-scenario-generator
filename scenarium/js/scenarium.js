@@ -5,8 +5,7 @@ var current;
 $(document).ready(async function () {
     let df = new rtng('https://raw.githubusercontent.com/michaelkubina/open-scenario-generator/main/scenarium/games/dwarf_fortress.json');
     let cdda = new rtng('https://raw.githubusercontent.com/michaelkubina/open-scenario-generator/main/scenarium/games/cdda.json');
-    let testing = new rtng('https://raw.githubusercontent.com/michaelkubina/open-scenario-generator/main/scenarium/games/testing.json');
-
+    
     current = df;
 
 

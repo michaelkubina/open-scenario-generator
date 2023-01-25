@@ -125,23 +125,32 @@ class rtng {
      * @param {any} object
      */
     async parseString(object) {
+        let string;
         console.log(">>> BEGIN PARSING STRING");
 
         //get number of picks
         let picks = await object.string.picks;
         console.log("picks: " + picks);
 
+        //get number of picks
+        let punctuation = await object.string.punctuation;
+        console.log("punctuation: " + punctuation);
+
         // get list length
         let number_of_items = await object.string.list.length;
         console.log("items: " + number_of_items);
 
-        for await (let i = 1; i <= object.string.picks; i++) {
+        for (let i = 1; i <= picks; i++) {
             let random_index = Math.floor(Math.random() * number_of_items);
-            let string = object.string.list[random_index];
+            string += await object.string.list[random_index];
+            // add puncuation
+            if (i < picks) {
+                string += punctuation;
+            }
         } 
 
         console.log("<<< END PARSING STRING");
-        return string;
+        return await string;
     }
 
     /**
