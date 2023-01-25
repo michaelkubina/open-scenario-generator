@@ -59,6 +59,7 @@ $(document).ready(async function () {
     $("#description").text(await current.getElement('description'));
     $("#homepage").attr("href", await current.getElement('homepage'));
     $("#wiki").attr("href", await current.getElement('wiki'));
+    $("#forum").attr("href", await current.getElement('forum'));
     $("#discord").attr("href", await current.getElement('discord'));
     $("#reddit").attr("href", await current.getElement('reddit'));
 

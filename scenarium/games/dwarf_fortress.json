@@ -3,6 +3,7 @@
   "description": "Dwarf Fortress (officially called Slaves to Armok: God of Blood Chapter II: Dwarf Fortress) is a construction and management simulation and roguelike indie video game created by Bay 12 Games.",
   "homepage": "http://www.bay12games.com/dwarves/",
   "wiki": "https://dwarffortresswiki.org/",
+  "forum": "http://www.bay12forums.com/smf/",
   "discord": "https://discord.com/invite/kitfoxgames",
   "reddit": "https://www.reddit.com/r/dwarffortress",
 
@@ -15,7 +16,7 @@
       "@sequence": [
         {
           "string": {
-            "items": [
+            "list": [
               "Wood",
               "Stone",
               "Bone",
@@ -42,7 +43,7 @@
         },
         {
           "string": {
-            "items": [
+            "list": [
               "percent",
               "/100",
               "%",
@@ -68,7 +69,7 @@
       "@sequence": [
         {
           "string": {
-            "items": [
+            "list": [
               "Serene",
               "Mirthful",
               "Joyous Wilds",

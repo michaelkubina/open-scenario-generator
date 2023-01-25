@@ -1,22 +1,11 @@
 {
   "title": "Cataclysm: Dark Days Ahead",
   "description": "Cataclysm: Dark Days Ahead (CDDA) is an open-source survival horror roguelike video game. Cataclysm: Dark Days Ahead is a fork of the original game Cataclysm.",
-  "metadata": {
-    "title": "Metadata Category",
-    "description": "This is a category of descriptive name-value pairs",
-    "version": {
-      "title": "Version",
-      "description": "0.F-3 Frank-3"
-    },
-    "website": {
-      "title": "Website",
-      "description": "https://cataclysmdda.org/"
-    },
-    "wiki": {
-      "title": "Wiki",
-      "description": "http://cddawiki.chezzo.com/cdda_wiki/index.php/Main_Page"
-    }
-  },
+  "homepage": "https://cataclysmdda.org/",
+  "wiki": "http://cddawiki.chezzo.com/cdda_wiki/index.php/Main_Page",
+  "forum": "https://discourse.cataclysmdda.org/",
+  "discord": "https://discord.gg/byxwnAU",
+  "reddit": "https://www.reddit.com/r/cataclysmdda/",
 
   "template": {
     "title": "List of templates",
@@ -27,7 +16,7 @@
       "@sequence": [
         {
           "string": {
-            "items": [
+            "list": [
               "Wood",
               "Stone",
               "Bone",
@@ -60,7 +49,7 @@
       "@sequence": [
         {
           "string": {
-            "items": [
+            "list": [
               "Serene",
               "Mirthful",
               "Joyous Wilds",

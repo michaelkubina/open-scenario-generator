@@ -127,16 +127,18 @@ class rtng {
     async parseString(object) {
         console.log(">>> BEGIN PARSING STRING");
 
-        //let picks = this.getValue(path + '.string.picks', await this.promise);
+        //get number of picks
         let picks = await object.string.picks;
-        console.log("picks: = " + picks);
+        console.log("picks: " + picks);
 
-        let number_of_items = await object.string.items.length;
-        console.log("number_of_items = " + number_of_items);
+        // get list length
+        let number_of_items = await object.string.list.length;
+        console.log("items: " + number_of_items);
 
-        let random_index = Math.floor(Math.random() * number_of_items);
-
-        let string = object.string.items[random_index];
+        for await (let i = 1; i <= object.string.picks; i++) {
+            let random_index = Math.floor(Math.random() * number_of_items);
+            let string = object.string.list[random_index];
+        } 
 
         console.log("<<< END PARSING STRING");
         return string;
