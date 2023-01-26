@@ -125,32 +125,43 @@ class rtng {
      * @param {any} object
      */
     async parseString(object) {
-        let string;
+        let string = [];
         console.log(">>> BEGIN PARSING STRING");
-
-        //get number of picks
-        let picks = await object.string.picks;
-        console.log("picks: " + picks);
-
-        //get number of picks
-        let punctuation = await object.string.punctuation;
-        console.log("punctuation: " + punctuation);
 
         // get list length
         let number_of_items = await object.string.list.length;
         console.log("items: " + number_of_items);
 
+        //get number of picks
+        let picks = await object.string.picks;
+        console.log("picks: " + picks);
+
+        //get punctuation
+        let punctuation = await object.string.punctuation;
+        console.log("punctuation: " + punctuation);
+
+        //get conjunction
+        let conjunction = await object.string.conjunction;
+        console.log("conjunction: " + conjunction);
+
         for (let i = 1; i <= picks; i++) {
-            let random_index = Math.floor(Math.random() * number_of_items);
-            string += await object.string.list[random_index];
+            // add conjunction
+            if (i == await picks && await picks > 1) {
+                string.push(conjunction);
+            }
+
+            // add random list item
+            let random_index = Math.floor(Math.random() * number_of_items); // random pick
+            string.push(await object.string.list[random_index]);
+
             // add puncuation
-            if (i < picks) {
-                string += punctuation;
+            if (i < await picks && i != await picks && picks > 1 && i != 1) {
+                string.push(await punctuation);
             }
         } 
 
         console.log("<<< END PARSING STRING");
-        return await string;
+        return await string.join(' ');
     }
 
     /**
@@ -160,9 +171,26 @@ class rtng {
     async parseNumber(object) {
         console.log(">>> BEGIN PARSING NUMBER");
 
+        /*
+            "min": -273.15, // the smallest possible value
+            "max": 3683.00, // the biggest possible value
+            "start": 0, // the beginning of the scale
+
+            "min_steps": 25.00, // the smallest increment/decrement for a random pick
+            "max_steps": 100.00, // the biggest increment/decrement for a random pick
+            "steps_steps": 5.00, // the increment/decrement for the increment/decrement itself???
+
+            "min_range": 25.00, // the smallest width of a range
+            "max_range": 100.00, // the largest width of a range
+            "steps_range": 25.00, // the increment/decrement for the width of the range
+            "bound": false // is it for a range allowed to get out of bound an being thus smaller then the min/max range
+        */
+
         let min = await object.number.min;
         let max = await object.number.max;
-        let width = await object.number.width; // not implemented yet
+        let steps = await object.number.steps;
+        let range = await object.number.range;
+        let bound = await object.number.bound;
 
         let result = Math.floor(Math.random() * max) + min;
 
@@ -175,7 +203,7 @@ class rtng {
      * @param {any} path
      */
     async parseSequence(path) { // e.g. rules.hermit_fort.@sequence
-        let output = '';
+        let sequence = [];
 
         console.log('Begin parsing @sequence');
 
@@ -184,35 +212,33 @@ class rtng {
         console.log(parsables);
 
         for await (const parsable_item of parsables) {
-            // add whitespace delimiter
-            output += ' ';
-
             console.log('Current parsable item:');
+
             let parsable_element = this.getValue(parsable_item, await this.promise);
             console.log(parsable_element);
 
             //console.log(Object.keys(parsable_element));
             if (Object.keys(parsable_element) == 'raw') {
                 console.log(parsable_element + ' is a raw');
-                output += await this.parseRaw(parsable_element);
+                sequence.push(await this.parseRaw(parsable_element));
             }
             else if (Object.keys(parsable_element) == 'string') {
                 console.log(parsable_element + ' is a string');
-                output += await this.parseString(parsable_element);
+                sequence.push(await this.parseString(parsable_element));
             }
             else if (Object.keys(parsable_element) == 'number') {
                 console.log(parsable_element + ' is a number');
-                output += await this.parseNumber(parsable_element);
+                sequence.push(await this.parseNumber(parsable_element));
             }
             else if (Object.keys(parsable_element) == 'template') {
                 console.log(parsable_element + ' is a template');
                 console.log(parsable_element.template);
                 // TODO: make sure not to fall into infinite loop!!!
-                output += await this.parseSequence(parsable_element.template + '.@sequence');
+                sequence.push(await this.parseSequence(parsable_element.template + '.@sequence'));
             }
         }
         console.log('End Parsing @sequence');
-        return output;
+        return sequence.join(' ');
     }
 
     /**

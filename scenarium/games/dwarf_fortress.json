@@ -57,6 +57,21 @@
         }
       ]
     },
+    "some-number": {
+      "title": "Parsing Number",
+      "description": "a test for parsing numbers, either single value or range",
+      "@sequence": [
+        {
+          "number": {
+            "min": -100.00,
+            "max": 100.00,
+            "steps": 5.00,
+            "range": 25.00,
+            "bound": false
+          }
+        }
+      ]
+    },
     "100-percent": {
       "title": "Pick one percent",
       "description": "Prints a text like '36 percent' and such",
