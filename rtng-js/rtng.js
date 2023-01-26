@@ -192,7 +192,7 @@ class rtng {
         let range = await object.number.range;
         let bound = await object.number.bound;
 
-        let result = Math.floor(Math.random() * max) + min;
+        let result = Math.floor(Math.random() * (max-min) + min);
 
         console.log("<<< END PARSING NUMBER");
         return result;
