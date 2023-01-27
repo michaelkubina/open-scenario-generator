@@ -29,6 +29,7 @@
         "@unique": true
         // @punctuation: ",", ==> A, B, C, D
         // @conjunction: "and" ==> A, B, C and D
+        // "sort": "asc/desc/none"
 
       },
 

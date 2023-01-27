@@ -126,6 +126,7 @@ class rtng {
      */
     async parseString(object) {
         let string = [];
+        let current_picks = [];
         console.log(">>> BEGIN PARSING STRING");
 
         // get list length
@@ -135,6 +136,10 @@ class rtng {
         //get number of picks
         let picks = await object.string.picks;
         console.log("picks: " + picks);
+
+        //get unique
+        let unique = await object.string.unique;
+        console.log("unique: " + unique);
 
         //get punctuation
         let punctuation = await object.string.punctuation;
@@ -151,12 +156,27 @@ class rtng {
             }
 
             // add random list item
-            let random_index = Math.floor(Math.random() * number_of_items); // random pick
-            string.push(await object.string.list[random_index]);
+            let random_index;
+            if (await unique) {
+                let unique_pick = false;
+                while (!unique_pick) {
+                    random_index = Math.floor(Math.random() * await number_of_items); // random pick
+                    if (current_picks.includes(random_index)) {
+                        unique_pick = false; // not necessary
+                    } else {
+                        current_picks.push(random_index);
+                        unique_pick = true;
+                    };
+                }
+            } else {
+                random_index = Math.floor(Math.random() * number_of_items); // random pick
+            }
 
             // add puncuation
-            if (i < await picks && i != await picks && picks > 1 && i != 1) {
-                string.push(await punctuation);
+            if (i < await picks-1 && picks > 1) {
+                string.push(await object.string.list[random_index] + await punctuation);
+            } else {
+                string.push(await object.string.list[random_index]);
             }
         } 
 
