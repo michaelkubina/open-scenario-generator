@@ -34,9 +34,9 @@ Using RTNG.js requires a valid RTNG.js schema in JSON notation. It can be access
 
 ```
 <head>
-	...
-	<script src="path-to-rtng-js/rtng.js"></script>
-	...
+  ...
+  <script src="path-to-rtng-js/rtng.js"></script>
+  ...
 </head>
 ```
 
@@ -60,25 +60,25 @@ A RTNG.js schema is for the most part a hierarchical organized tree of templates
 
 ```
 {
-	...
-	"0-to-100": {          <-- a template
-		"@sequence":[      <-- because it has a @sequence
-			{
-				...
-			}
-		]
-	},
-	...
-	"number": {            <-- a hierarchy, because it does not have a @sequence
-		"any-percent": {       <-- another template within a hierarchy
-			"@sequence":[      <-- because it has a @sequence
-				{
-				...
-				}
-			]
-		},
-	},
-	...
+  ...
+  "0-to-100": {          <-- a template
+    "@sequence":[      <-- because it has a @sequence
+      {
+        ...
+      }
+    ]
+  },
+  ...
+  "number": {            <-- a hierarchy, because it does not have a @sequence
+    "any-percent": {       <-- another template within a hierarchy
+      "@sequence":[      <-- because it has a @sequence
+        {
+        ...
+        }
+      ]
+    },
+  },
+  ...
 }
 ```
 
@@ -88,42 +88,42 @@ There are currently four primitive data types that have their own set of attribu
 
 ```
 {
-	...
-	"0-to-100": {
-		"@sequence":[
-			{
-				"number": {
-					"min": 0,
-					"max": 100,
-					"picks": 1
-				}
-			}
-		]
-	},
-	"3-colors": {
-		"@sequence":[
-			{
-				"string": {
-					"list":[
-						"red",
-						"green",
-						"blue",
-						"yellow",
-						"cyan",
-						"magenta",
-						"purple",
-						"pink",
-						"black",
-						"white"
-					],
-					"picks": 3,
-					"unique": true,
-					"punctuation": ",",
-					"conjugation": "and"
-				}
-			}
-		]
-	},
+  ...
+  "0-to-100": {
+    "@sequence":[
+      {
+        "number": {
+          "min": 0,
+          "max": 100,
+          "picks": 1
+        }
+      }
+    ]
+  },
+  "3-colors": {
+    "@sequence":[
+      {
+        "string": {
+          "list":[
+            "red",
+            "green",
+            "blue",
+            "yellow",
+            "cyan",
+            "magenta",
+            "purple",
+            "pink",
+            "black",
+            "white"
+          ],
+          "picks": 3,
+          "unique": true,
+          "punctuation": ",",
+          "conjugation": "and"
+        }
+      }
+    ]
+  },
 ```
 
 The other two data type are `"raw"`, which is used for a direct string output, and most importantly the `"template"` data type. This allows for parsing another template directly into the template, that is currently being processed.
@@ -131,33 +131,33 @@ The other two data type are `"raw"`, which is used for a direct string output, a
 Adding a template means actually just writing the absolute path in `dot.notation` to another template within the schema. The use of `dot.notation` for the names of your templates or hierarchies is not allowed, as it will break things. For readability benefits the use of `kebab-case` is encouraged instead.
 
 ```
-	"number": {
-		"any-percent": {
-			"@sequence":[
-				{
-					"template": "0-to-100"
-				},
-				{
-					"raw": "%"
-				}
-			]
-		},
-	},
-	"text": {
-		"favourite-color": {
-			"@sequence":[
-				{
-					"raw": "Let me think about it... I believe"
-				},
-				{
-					"template": "3-colors"
-				},
-				{
-					"raw": "are my favourite colors!"
-				}
-			]
-		}
-	}
+  "number": {
+    "any-percent": {
+      "@sequence":[
+        {
+          "template": "0-to-100"
+        },
+        {
+          "raw": "%"
+        }
+      ]
+    },
+  },
+  "text": {
+    "favourite-color": {
+      "@sequence":[
+        {
+          "raw": "Let me think about it... I believe"
+        },
+        {
+          "template": "3-colors"
+        },
+        {
+          "raw": "are my favourite colors!"
+        }
+      ]
+    }
+  }
 }
 ```
 
@@ -165,13 +165,13 @@ You are allowed to enrich the schema with your JSON data as long as you follow t
 
 ```
 {
-	"metadata": {
-		"title": "example.json",
-		"author": "Michael Kubina",
-		"description": "a small example schema for RTNG.js",
-		...
-	},
-	...
+  "metadata": {
+    "title": "example.json",
+    "author": "Michael Kubina",
+    "description": "a small example schema for RTNG.js",
+    ...
+  },
+  ...
 }
 ```
 
