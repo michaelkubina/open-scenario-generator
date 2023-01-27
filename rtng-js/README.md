@@ -147,7 +147,13 @@ Adding a template means actually just writing the absolute path in `dot.notation
         "favourite-color": {
             "@sequence":[
                 {
-                    "raw": "Let me think about it... I believe"
+                    "raw": "Let me think about it... I am"
+                },
+                {
+                    "template": "number.any-percent"
+                },
+                {
+                    "raw": "sure that"
                 },
                 {
                     "template": "3-colors"
