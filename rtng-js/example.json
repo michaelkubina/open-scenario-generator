@@ -46,6 +46,23 @@
       }
     ]
   },
+  "increments-of-eleven-with-offset": {
+    "title": "Pick five from 27 to 1000, where 27 is the start and get incremented by eleven.",
+    "@sequence": [
+      {
+        "number": {
+          "min": 27,
+          "max": 1000,
+          "steps": 11,
+          "picks": 5,
+          "unique": true,
+          "sort": "asc",
+          "punctuation": ",",
+          "conjunction": "and"
+        }
+      }
+    ]
+  },
   "3-colors": {
     "title": "Three colors from a list of ten",
     "@sequence": [
