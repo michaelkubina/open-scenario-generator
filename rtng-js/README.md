@@ -119,7 +119,7 @@ There are currently four primitive data types that have their own set of attribu
                     "picks": 3,
                     "unique": true,
                     "punctuation": ",",
-                    "conjugation": "and"
+                    "conjunction": "and"
                 }
             }
         ]
