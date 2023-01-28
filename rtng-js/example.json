@@ -29,6 +29,23 @@
       }
     ]
   },
+  "multiples-of-seven": {
+    "title": "Seven number that are multiples of seven up to 7777",
+    "@sequence": [
+      {
+        "number": {
+          "min": 7,
+          "max": 7777,
+          "steps": 7,
+          "picks": 7,
+          "unique": true,
+          "sort": "asc",
+          "punctuation": ",",
+          "conjunction": "and"
+        }
+      }
+    ]
+  },
   "3-colors": {
     "title": "Three colors from a list of ten",
     "@sequence": [

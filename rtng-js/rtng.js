@@ -213,6 +213,8 @@ class rtng {
         if (await object.number.steps > 0) {
             steps = await object.number.steps;
         }
+        console.log(await steps);
+
         let picks = await object.number.picks;
         let unique = await object.number.unique;
         let raw = await object.number.raw;
@@ -221,7 +223,7 @@ class rtng {
         let conjunction = await object.number.conjunction;
 
         let result = Math.floor(Math.random() * ((max - min) / steps));
-        result = await result + min;
+        result = await result * steps + min;
 
         console.log("<<< END PARSING NUMBER");
         return result;
