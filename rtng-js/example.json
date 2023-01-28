@@ -5,12 +5,25 @@
     "description": "a small example schema for RTNG.js"
   },
   "0-to-100": {
-    "title":  "A number from 0 to 100",
+    "title": "A number from 0 to 100",
     "@sequence": [
       {
         "number": {
           "min": 0,
           "max": 100,
+          "picks": 1
+        }
+      }
+    ]
+  },
+  "even-number-from-0-to-1000": {
+    "title": "An even number between 0 and 1000",
+    "@sequence": [
+      {
+        "number": {
+          "min": 0,
+          "max": 1000,
+          "steps": 2,
           "picks": 1
         }
       }

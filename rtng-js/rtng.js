@@ -192,27 +192,36 @@ class rtng {
         console.log(">>> BEGIN PARSING NUMBER");
 
         /*
-            "min": -273.15, // the smallest possible value
-            "max": 3683.00, // the biggest possible value
-            "start": 0, // the beginning of the scale
-
-            "min_steps": 25.00, // the smallest increment/decrement for a random pick
-            "max_steps": 100.00, // the biggest increment/decrement for a random pick
-            "steps_steps": 5.00, // the increment/decrement for the increment/decrement itself???
-
-            "min_range": 25.00, // the smallest width of a range
-            "max_range": 100.00, // the largest width of a range
-            "steps_range": 25.00, // the increment/decrement for the width of the range
-            "bound": false // is it for a range allowed to get out of bound an being thus smaller then the min/max range
+            "number": {
+              "min": 0,
+              "max": 100,
+              "steps": 1,
+              "picks": 3,
+              "unique": true,
+              "raw": false,
+              "sort": "none",
+              "punctuation": ",",
+              "conjunction": "and"
+            }
         */
 
         let min = await object.number.min;
         let max = await object.number.max;
-        let steps = await object.number.steps;
-        let range = await object.number.range;
-        let bound = await object.number.bound;
 
-        let result = Math.floor(Math.random() * (max-min) + min);
+        // steps: default 1
+        let steps = 1;
+        if (await object.number.steps > 0) {
+            steps = await object.number.steps;
+        }
+        let picks = await object.number.picks;
+        let unique = await object.number.unique;
+        let raw = await object.number.raw;
+        let sort = await object.number.sort;
+        let puncuation = await object.number.puncuation;
+        let conjunction = await object.number.conjunction;
+
+        let result = Math.floor(Math.random() * ((max - min) / steps));
+        result = await result + min;
 
         console.log("<<< END PARSING NUMBER");
         return result;
