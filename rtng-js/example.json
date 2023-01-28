@@ -30,12 +30,12 @@
     ]
   },
   "multiples-of-seven": {
-    "title": "Seven multiples of seven up to 7777",
+    "title": "Seven multiples of seven up to 777",
     "@sequence": [
       {
         "number": {
           "min": 7,
-          "max": 7777,
+          "max": 777,
           "steps": 7,
           "picks": 7,
           "unique": true,
@@ -46,8 +46,8 @@
       }
     ]
   },
-  "increments-of-ten-beginning-from-five": {
-    "title": "Pick three numbers beginning from 5, which is being incremented by 10",
+  "numbers-ending-with-five": {
+    "title": "Pick three numbers that end with a 5",
     "@sequence": [
       {
         "number": {
