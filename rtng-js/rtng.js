@@ -189,6 +189,8 @@ class rtng {
      * @param {any} object
      */
     async parseNumber(object) {
+        let number = [];
+        let current_picks = [];
         console.log(">>> BEGIN PARSING NUMBER");
 
         /*
@@ -215,18 +217,59 @@ class rtng {
         }
         console.log(await steps);
 
-        let picks = await object.number.picks;
-        let unique = await object.number.unique;
+        // picks: default 1
+        let picks = 1;
+        picks = await object.number.picks;
+
+        // unique: default true
+        let unique = true;
+        unique = await object.number.unique;
+
+        // 
         let raw = await object.number.raw;
         let sort = await object.number.sort;
-        let puncuation = await object.number.puncuation;
+        let punctuation = await object.number.punctuation;
         let conjunction = await object.number.conjunction;
 
         let result = Math.floor(Math.random() * ((max - min) / steps));
         result = await result * steps + min;
 
+        for (let i = 1; i <= picks; i++) {
+            // add conjunction
+            if (i == await picks && await picks > 1) {
+                number.push(conjunction);
+            }
+
+            // add random list item
+            let random_number;
+            if (await unique) {
+                let unique_pick = false;
+                while (!unique_pick) {
+                    random_number = Math.floor(Math.random() * ((max - min) / await steps)); // random pick
+                    random_number = await random_number * steps + min;
+                    if (current_picks.includes(random_number)) {
+                        unique_pick = false; // not necessary
+                    } else {
+                        console.log(random_number);
+                        current_picks.push(random_number);
+                        unique_pick = true;
+                    };
+                }
+            } else {
+                random_number = Math.floor(Math.random() * ((max - min) / steps)); // random pick
+                random_number = await random_number * steps + min;
+            }
+
+            // add puncuation
+            if (i < await picks - 1 && await picks > 1) {
+                number.push(await random_number + await punctuation);
+            } else {
+                number.push(await random_number);
+            }
+        } 
+
         console.log("<<< END PARSING NUMBER");
-        return result;
+        return await number.join(' ');
     }
 
     /**

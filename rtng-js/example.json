@@ -30,7 +30,7 @@
     ]
   },
   "multiples-of-seven": {
-    "title": "Seven number that are multiples of seven up to 7777",
+    "title": "Seven multiples of seven up to 7777",
     "@sequence": [
       {
         "number": {
