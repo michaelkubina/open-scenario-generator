@@ -3067,13 +3067,24 @@
       ]
     },
     "name": {
-      "title": "A random german name",
+      "title": "A random german fancy name",
       "@sequence": [
         {
           "template": "germany.first_name"
         },
         {
           "template": "germany.second_name_or_initial"
+        },
+        {
+          "template": "germany.last_name"
+        }
+      ]
+    },
+    "name_short": {
+      "title": "A random german normal name",
+      "@sequence": [
+        {
+          "template": "germany.first_name"
         },
         {
           "template": "germany.last_name"
