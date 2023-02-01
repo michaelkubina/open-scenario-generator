@@ -22,7 +22,7 @@
               "Bone",
               "Metal"
             ],
-            "picks": 1
+            "min_picks": 1
           }
         }
       ]
@@ -60,7 +60,7 @@
               "Haunted",
               "Terrifying"
             ],
-            "picks": 2
+            "min_picks": 2
           }
         }
       ]

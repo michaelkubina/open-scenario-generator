@@ -216,11 +216,6 @@ class rtng {
         console.log("conjunction: " + conjunction);
 
         for (let i = 1; i <= picks; i++) {
-            // add conjunction
-            if (i == await picks && await picks > 1) {
-                string.push(conjunction);
-            }
-
             // add random list item
             let random_index;
             if (await unique) {
@@ -237,14 +232,19 @@ class rtng {
             } else {
                 random_index = Math.floor(Math.random() * number_of_items); // random pick
             }
-
-            // add puncuation
-            if (i < await picks - 1 && picks > 1) {
-                string.push(await object.string.list[random_index] + await punctuation);
-            } else {
-                string.push(await object.string.list[random_index]);
-            }
+            // add to string array
+            string.push(await object.string.list[random_index]);
         }
+
+        // add conjunction
+        /*if (i == await picks && await picks > 1) {
+            string.push(conjunction);
+        }
+
+        // add puncuation
+        if (i < await picks - 1 && picks > 1) {
+            string.push(await object.string.list[random_index] + await punctuation);
+        }*/
 
         console.log("<<< END PARSING STRING");
         return await string.join(' ');

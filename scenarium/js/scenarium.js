@@ -8,7 +8,7 @@ $(document).ready(async function () {
     let example = new rtng('https://raw.githubusercontent.com/michaelkubina/open-scenario-generator/main/rtng-js/example.json');
     let names = new rtng('https://raw.githubusercontent.com/michaelkubina/open-scenario-generator/main/rtng-js/names.json');
 
-    current = names;
+    current = example;
 
 
     // test for object

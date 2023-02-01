@@ -11,7 +11,7 @@
         "number": {
           "min": 0,
           "max": 100,
-          "picks": 1
+          "min_picks": 1
         }
       }
     ]
@@ -24,7 +24,7 @@
           "min": 0,
           "max": 1000,
           "steps": 2,
-          "picks": 1
+          "min_picks": 1
         }
       }
     ]
@@ -37,7 +37,7 @@
           "min": 7,
           "max": 777,
           "steps": 7,
-          "picks": 7,
+          "min_picks": 7,
           "unique": true,
           "sort": "asc",
           "punctuation": ",",
@@ -54,7 +54,7 @@
           "min": 5,
           "max": 1000,
           "steps": 10,
-          "picks": 3,
+          "min_picks": 3,
           "unique": true,
           "sort": "asc",
           "punctuation": ",",
@@ -80,7 +80,7 @@
             "black",
             "white"
           ],
-          "picks": 3,
+          "min_picks": 3,
           "unique": true,
           "punctuation": ",",
           "conjunction": "and"
