@@ -513,7 +513,7 @@
               "Hans Georg",
               "Samuel"
             ],
-            "picks": 1
+            "min_picks": 1
           }
         }
       ]
@@ -1049,7 +1049,7 @@
               "X.",
               "Y."
             ],
-            "picks": 1
+            "min_picks": 1
           }
         }
       ]
@@ -3061,7 +3061,7 @@
               "Kahlert",
               "Lietz"
             ],
-            "picks": 1
+            "min_picks": 1
           }
         }
       ]
@@ -3399,7 +3399,7 @@
               "Zimmerer",
               "Zweiradmechatroniker"
             ],
-            "picks": 1
+            "min_picks": 1
           }
         }
       ]
@@ -3448,7 +3448,7 @@
           "number": {
             "min": 18,
             "max": 67,
-            "picks": 1
+            "min_picks": 1
           }
         },
         {
