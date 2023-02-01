@@ -124,6 +124,7 @@ class rtng {
      * 
      * @param {any} object
      */
+    /*
     async parseString(object) {
         let string = [];
         let current_picks = [];
@@ -134,7 +135,7 @@ class rtng {
         console.log("items: " + number_of_items);
 
         //get number of picks
-        let picks = await object.string.picks;
+        let picks = await object.string.min_picks;
         console.log("picks: " + picks);
 
         //get unique
@@ -183,6 +184,71 @@ class rtng {
         console.log("<<< END PARSING STRING");
         return await string.join(' ');
     }
+    */
+
+    /**
+     * 
+     * @param {any} object
+     */
+    async parseString(object) {
+        let string = [];
+        let current_picks = [];
+        console.log(">>> BEGIN PARSING STRING");
+
+        // get list length
+        let number_of_items = await object.string.list.length;
+        console.log("items: " + number_of_items);
+
+        //get number of picks
+        let picks = await object.string.min_picks;
+        console.log("picks: " + picks);
+
+        //get unique
+        let unique = await object.string.unique;
+        console.log("unique: " + unique);
+
+        //get punctuation
+        let punctuation = await object.string.punctuation;
+        console.log("punctuation: " + punctuation);
+
+        //get conjunction
+        let conjunction = await object.string.conjunction;
+        console.log("conjunction: " + conjunction);
+
+        for (let i = 1; i <= picks; i++) {
+            // add conjunction
+            if (i == await picks && await picks > 1) {
+                string.push(conjunction);
+            }
+
+            // add random list item
+            let random_index;
+            if (await unique) {
+                let unique_pick = false;
+                while (!unique_pick) {
+                    random_index = Math.floor(Math.random() * await number_of_items); // random pick
+                    if (current_picks.includes(random_index)) {
+                        unique_pick = false; // not necessary
+                    } else {
+                        current_picks.push(random_index);
+                        unique_pick = true;
+                    };
+                }
+            } else {
+                random_index = Math.floor(Math.random() * number_of_items); // random pick
+            }
+
+            // add puncuation
+            if (i < await picks - 1 && picks > 1) {
+                string.push(await object.string.list[random_index] + await punctuation);
+            } else {
+                string.push(await object.string.list[random_index]);
+            }
+        }
+
+        console.log("<<< END PARSING STRING");
+        return await string.join(' ');
+    }
 
     /**
      * 
@@ -219,7 +285,7 @@ class rtng {
 
         // picks: default 1
         let picks = 1;
-        picks = await object.number.picks;
+        picks = await object.number.min_picks;
 
         // unique: default true
         let unique = true;

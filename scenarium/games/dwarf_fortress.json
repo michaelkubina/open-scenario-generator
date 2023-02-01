@@ -22,7 +22,8 @@
               "Bone",
               "Metal"
             ],
-            "picks": 1,
+            "min_picks": 1,
+            "max_picks": 1,
             "unique": true,
             "punctuation": ",",
             "conjunction": "and"
@@ -52,7 +53,8 @@
               "%",
               "of 100"
             ],
-            "picks": 1
+            "min_picks": 1,
+            "max_picks": 1
           }
         }
       ]
@@ -98,7 +100,8 @@
               "Haunted",
               "Terrifying"
             ],
-            "picks": 3,
+            "min_picks": 1,
+            "max_picks": 3,
             "unique": true,
             "punctuation": ",",
             "conjunction": "and"
