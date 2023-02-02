@@ -74,6 +74,8 @@ $(document).ready(async function () {
 });
 
 async function listEverything(string) {
+    let debug = false;
+
     // loop through schema
 
     var elements = await current.listElements(string);
@@ -82,12 +84,12 @@ async function listEverything(string) {
     // https://stackoverflow.com/questions/37576685/using-async-await-with-a-foreach-loop
     for await (const element of elements) {
         // debugging stuff
-        console.log('>>> ELEMENT >>> ' + element);
-        console.log(element);
-        console.log('isTemplate(' + element + ')');
-        console.log(await current.isTemplate(element));
+        if (debug) console.log('>>> ELEMENT >>> ' + element);
+        if (debug) console.log(element);
+        if (debug) console.log('isTemplate(' + element + ')');
+        if (debug) console.log(await current.isTemplate(element));
         if (await current.isTemplate(element)) {
-            console.log(await current.getElement(element));
+            if (debug) console.log(await current.getElement(element));
         }
 
         if (current.isElement(element, 'title')) {
@@ -102,6 +104,6 @@ async function listEverything(string) {
 
         await listEverything(element);
 
-        console.log('<<< ELEMENT <<< ' + element);
+        if (debug) console.log('<<< ELEMENT <<< ' + element);
     }
 }

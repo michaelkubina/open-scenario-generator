@@ -5,7 +5,7 @@
  * 
  * https://github.com/michaelkubina/open-scenario-generator
  * 
- * 2023-01-23
+ * 2023-02-02
  * 
  */
 class rtng {
@@ -57,12 +57,15 @@ class rtng {
      * @param {any} path
      */
     async isObject(path) {
+        let debug = false;
+
         // check wether it is new hierarchy
         if (typeof this.getValue(path, await this.promise) === 'object' && Array.isArray(this.getValue(path, await this.promise)) == false) {
             console.log(path + " is object");
             return true;
         }
-        console.log(path + " is NOT object");
+        if (debug) console.log(path + " is NOT object");
+
         return false;
     }
 
@@ -79,7 +82,8 @@ class rtng {
      * @param {any} path
      */
     async getElement(path) {
-        //console.log(this.getValue(path, await this.promise));
+        let debug = false;
+        if (debug) console.log(this.getValue(path, await this.promise));
         return (this.getValue(path, await this.promise));
     }
 
@@ -107,282 +111,339 @@ class rtng {
     }
 
     /**
-     * Returns the parsed raw string
-     * @param {raw} object
+     * add punctuation and conjunction to list
+     * @param {any} list
+     * @param {any} punctuation
+     * @param {any} conjunction
      */
-    async parseRaw(object) {
-        console.log(">>> BEGIN PARSING RAW");
-        console.log(object);
-
-        let raw = object.raw + " "
-
-        console.log("<<< END PARSING RAW");
-        return raw;
-    }
-
-    /**
-     * 
-     * @param {any} object
-     */
-    /*
-    async parseString(object) {
-        let string = [];
-        let current_picks = [];
-        console.log(">>> BEGIN PARSING STRING");
-
-        // get list length
-        let number_of_items = await object.string.list.length;
-        console.log("items: " + number_of_items);
-
-        //get number of picks
-        let picks = await object.string.min_picks;
-        console.log("picks: " + picks);
-
-        //get unique
-        let unique = await object.string.unique;
-        console.log("unique: " + unique);
-
-        //get punctuation
-        let punctuation = await object.string.punctuation;
-        console.log("punctuation: " + punctuation);
-
-        //get conjunction
-        let conjunction = await object.string.conjunction;
-        console.log("conjunction: " + conjunction);
-
-        for (let i = 1; i <= picks; i++) {
-            // add conjunction
-            if (i == await picks && await picks > 1) {
-                string.push(conjunction);
-            }
-
-            // add random list item
-            let random_index;
-            if (await unique) {
-                let unique_pick = false;
-                while (!unique_pick) {
-                    random_index = Math.floor(Math.random() * await number_of_items); // random pick
-                    if (current_picks.includes(random_index)) {
-                        unique_pick = false; // not necessary
-                    } else {
-                        current_picks.push(random_index);
-                        unique_pick = true;
-                    };
-                }
-            } else {
-                random_index = Math.floor(Math.random() * number_of_items); // random pick
-            }
-
-            // add puncuation
-            if (i < await picks-1 && picks > 1) {
-                string.push(await object.string.list[random_index] + await punctuation);
-            } else {
-                string.push(await object.string.list[random_index]);
-            }
-        } 
-
-        console.log("<<< END PARSING STRING");
-        return await string.join(' ');
-    }
-    */
-
-    /**
-     * 
-     * @param {any} object
-     */
-    async parseString(object) {
-        let string = [];
-        let current_picks = [];
-        console.log(">>> BEGIN PARSING STRING");
-
-        // get list length
-        let number_of_items = await object.string.list.length;
-        console.log("items: " + number_of_items);
-
-        //get number of picks
-        let picks = await object.string.min_picks;
-        console.log("picks: " + picks);
-
-        //get unique
-        let unique = await object.string.unique;
-        console.log("unique: " + unique);
-
-        //get punctuation
-        let punctuation = await object.string.punctuation;
-        console.log("punctuation: " + punctuation);
-
-        //get conjunction
-        let conjunction = await object.string.conjunction;
-        console.log("conjunction: " + conjunction);
-
-        for (let i = 1; i <= picks; i++) {
-            // add random list item
-            let random_index;
-            if (await unique) {
-                let unique_pick = false;
-                while (!unique_pick) {
-                    random_index = Math.floor(Math.random() * await number_of_items); // random pick
-                    if (current_picks.includes(random_index)) {
-                        unique_pick = false; // not necessary
-                    } else {
-                        current_picks.push(random_index);
-                        unique_pick = true;
-                    };
-                }
-            } else {
-                random_index = Math.floor(Math.random() * number_of_items); // random pick
-            }
-            // add to string array
-            string.push(await object.string.list[random_index]);
-        }
-
-        // add conjunction
-        /*if (i == await picks && await picks > 1) {
-            string.push(conjunction);
+    applyPunctuation(list, punctuation, conjunction) {
+        // abort on empty list or list with only one item
+        if (list.length < 2) {
+            return list;
         }
 
         // add puncuation
-        if (i < await picks - 1 && picks > 1) {
-            string.push(await object.string.list[random_index] + await punctuation);
-        }*/
-
-        console.log("<<< END PARSING STRING");
-        return await string.join(' ');
+        if (punctuation) {
+            // add punctuation to all elements in array except the two last
+            for (let i = 0; i < list.length - 2; i++) {
+                list[i] = list[i] + punctuation;
+            }
+            if (conjunction) {
+                // add conjunction before the last
+                list.splice(list.length - 1, 0, conjunction);
+            } else {
+                // if there is no conjunction add punctuation instead 
+                list[list.length - 2] = list[list.length - 2] + punctuation;
+            }
+            return list;
+        }
     }
 
     /**
-     * 
+     * Returns a sorted list of values (lexicographically or numerical)
+     * @param {any} list
+     * @param {any} sort
+     */
+    applySort(list, sort) {
+        // abort on empty list or list with only one item and when no sorting direction
+        if (list.length < 2 || sort == "none") {
+            return list;
+        }
+
+        // sort string lexicographically and numbers numerically
+        if (typeof(list[0]) == "number" && sort == "asc") {
+            return list.sort(function (a, b) { return a - b });
+        }
+        if (typeof (list[0]) == "number" && sort == "desc") {
+            return list.sort(function (a, b) { return b - a });
+        }
+        if (typeof (list[0]) == "string" && sort == "asc") {
+            return list.sort();
+        }
+        if (typeof (list[0]) == "string" && sort == "desc") {
+            return list.sort().reverse();
+        }
+    }
+
+    /**
+     * parse a raw object within a @sequence
+     * @param {raw} object
+     */
+    async parseRaw(object) {
+        return object.raw + " ";
+    }
+
+    /**
+     * parse a string object within a @sequence
+     * @param {any} object
+     */
+    async parseString(object) {
+
+        let debug = true;
+
+        if (debug) console.log(">>> BEGIN PARSING STRING");
+
+        let output = [];
+        let current_picks = [];
+
+        // get list length
+        let number_of_items = await object.string.list.length;
+        if (debug) console.log("items: " + number_of_items);
+        if (debug) console.log(await object.string.list);
+
+        // min_picks (optional)
+        let min_picks = 1; // default
+        if (await object.string.min_picks >= 0) {
+            min_picks = await object.string.min_picks;
+        }
+        if (debug) console.log("min_picks: " + min_picks);
+
+        // max_picks (optional)
+        let max_picks = 1; // default
+        if (await object.string.max_picks >= 0) {
+            max_picks = await object.string.max_picks;
+        }
+        if (debug) console.log("max_picks: " + max_picks);
+
+        // get unique
+        let unique = false; // default
+        if (await object.string.unique) {
+            unique = await object.string.unique;
+        }
+        if (debug) console.log("unique: " + unique);
+
+        // get sort
+        let sort = "none"; // default
+        if (await object.string.sort) {
+            sort = await object.string.sort;
+        }
+        if (debug) console.log("sort: " + sort);
+
+        // punctuation
+        let punctuation = '' // default
+        if (await object.string.punctuation) {
+            punctuation = await object.string.punctuation;
+        }
+        if (debug) console.log("punctuation: " + punctuation);
+
+        // conjunction
+        let conjunction = '' // default
+        if (await object.string.conjunction) {
+            conjunction = await object.string.conjunction;
+        }
+        if (debug) console.log("conjunction: " + conjunction);
+
+        // random pick (unique or repeatable)
+        for (let i = 1; i <= min_picks; i++) {
+            // add random list item
+            let random_index;
+
+            // not unique picks allowed
+            if (!unique) {
+                random_index = Math.floor(Math.random() * number_of_items); // random pick
+            }
+
+            // unique picks expected
+            if (await unique) {
+                let is_unique_pick = false;
+                while (!is_unique_pick) {
+                    random_index = Math.floor(Math.random() * number_of_items); // random pick
+                    if (current_picks.includes(random_index)) {
+                        // just pick again
+                    } else {
+                        current_picks.push(random_index);
+                        is_unique_pick = true;
+                    };
+                }
+            }
+
+            // add to string array and make sure the type is converted to string
+            output.push(await object.string.list[random_index].toString());
+        }
+
+        output = this.applySort(output, sort);
+
+        // add puncuation
+        output = this.applyPunctuation(output, punctuation, conjunction);
+
+        if (debug) console.log("<<< END PARSING STRING");
+        return output.join(' ');
+    }
+
+    /**
+     * parse a number object within a @sequence
      * @param {any} object
      */
     async parseNumber(object) {
-        let number = [];
-        let current_picks = [];
-        console.log(">>> BEGIN PARSING NUMBER");
+        let debug = false;
+
+        if (debug) console.log(">>> BEGIN PARSING NUMBER");
 
         /*
             "number": {
               "min": 0,
               "max": 100,
               "steps": 1,
-              "picks": 3,
+              "min_picks": 0,
+              "max_picks": 2,
               "unique": true,
-              "raw": false,
+              "return_list": false,
               "sort": "none",
               "punctuation": ",",
               "conjunction": "and"
             }
         */
 
-        let min = await object.number.min;
-        let max = await object.number.max;
+        let output = [];
+        let current_picks = [];
 
-        // steps: default 1
-        let steps = 1;
+        // min (required)
+        let min = await object.number.min;
+        if (debug) console.log("min: " + min);
+
+        // max (required)
+        let max = await object.number.max;
+        if (debug) console.log("max: " + max);
+
+        // steps (optional)
+        let steps = 1; // default
         if (await object.number.steps > 0) {
             steps = await object.number.steps;
         }
-        console.log(await steps);
+        if (debug) console.log("steps: " + steps);
 
-        // picks: default 1
-        let picks = 1;
-        picks = await object.number.min_picks;
+        // min_picks (optional)
+        let min_picks = 1; // default
+        if (await object.number.min_picks >= 0) {
+            min_picks = await object.number.min_picks;
+        }
+        if (debug) console.log("min_picks: " + min_picks);
 
-        // unique: default true
-        let unique = true;
-        unique = await object.number.unique;
+        // max_picks (optional)
+        let max_picks = 1; // default
+        if (await object.number.max_picks >= 0) {
+            max_picks = await object.number.max_picks;
+        }
+        if (debug) console.log("max_picks: " + max_picks);
 
-        // 
-        let raw = await object.number.raw;
-        let sort = await object.number.sort;
-        let punctuation = await object.number.punctuation;
-        let conjunction = await object.number.conjunction;
+        // unique
+        let unique = true; // default
+        if (typeof(await object.number.unique) == "boolean") {
+            unique = await object.number.unique;
+        }
+        if (debug) console.log("unique: " + unique);
 
-        let result = Math.floor(Math.random() * ((max - min) / steps));
-        result = await result * steps + min;
+        // return_list
+        let return_list = false;
+        if (await object.number.return_list) {
+            return_list = await object.number.return_list;
+        }
+        if (debug) console.log("return_list: " + return_list);
 
-        for (let i = 1; i <= picks; i++) {
-            // add conjunction
-            if (i == await picks && await picks > 1) {
-                number.push(conjunction);
-            }
+        // sort
+        let sort = "none" // default
+        if (await object.number.sort) {
+            sort = await object.number.sort;
+        }
+        if (debug) console.log("sort: " + sort);
 
+        // punctuation
+        let punctuation = '' // default
+        if (await object.number.punctuation) {
+            punctuation = await object.number.punctuation;
+        }
+        if (debug) console.log("punctuation: " + punctuation);
+
+        // conjunction
+        let conjunction = '' // default
+        if (await object.number.conjunction) {
+            conjunction = await object.number.conjunction;
+        }
+        if (debug) console.log("conjunction: " + conjunction);
+
+        // roll the numbers
+        for (let i = 1; i <= min_picks; i++) {
             // add random list item
             let random_number;
-            if (await unique) {
+            if (unique) {
                 let unique_pick = false;
                 while (!unique_pick) {
-                    random_number = Math.floor(Math.random() * ((max - min) / await steps)); // random pick
-                    random_number = await random_number * steps + min;
+                    random_number = Math.floor(Math.random() * ((max - min) / steps)); // random pick
+                    random_number = random_number * steps + min;
                     if (current_picks.includes(random_number)) {
                         unique_pick = false; // not necessary
                     } else {
-                        console.log(random_number);
                         current_picks.push(random_number);
                         unique_pick = true;
                     };
                 }
             } else {
                 random_number = Math.floor(Math.random() * ((max - min) / steps)); // random pick
-                random_number = await random_number * steps + min;
+                random_number = random_number * steps + min;
             }
+            output.push(random_number);
+        }
 
-            // add puncuation
-            if (i < await picks - 1 && await picks > 1) {
-                number.push(await random_number + await punctuation);
-            } else {
-                number.push(await random_number);
-            }
-        } 
+        if (debug) console.log(output);
 
-        console.log("<<< END PARSING NUMBER");
-        return await number.join(' ');
+        // sort
+        output = this.applySort(output, sort);
+
+        // add punctuation
+        output = this.applyPunctuation(await output, await punctuation, await conjunction);
+
+        if (debug) console.log("<<< END PARSING NUMBER");
+
+        return output.join(' ');
     }
 
     /**
-     * 
+     * parse a @sequence
      * @param {any} path
      */
     async parseSequence(path) { // e.g. rules.hermit_fort.@sequence
+        let debug = false;
+
         let sequence = [];
 
-        console.log('Begin parsing @sequence');
+        if (debug) console.log('Begin parsing @sequence');
 
         let parsables = await this.listElements(path);
-        console.log('All parsables:');
-        console.log(parsables);
+        if (debug) console.log('All parsables:');
+        if (debug) console.log(parsables);
 
         for await (const parsable_item of parsables) {
-            console.log('Current parsable item:');
+            if (debug) console.log('Current parsable item:');
 
             let parsable_element = this.getValue(parsable_item, await this.promise);
-            console.log(parsable_element);
+            if (debug) console.log(parsable_element);
 
             //console.log(Object.keys(parsable_element));
             if (Object.keys(parsable_element) == 'raw') {
-                console.log(parsable_element + ' is a raw');
+                if (debug) console.log(parsable_element + ' is a raw');
                 sequence.push(await this.parseRaw(parsable_element));
             }
             else if (Object.keys(parsable_element) == 'string') {
-                console.log(parsable_element + ' is a string');
+                if (debug) console.log(parsable_element + ' is a string');
                 sequence.push(await this.parseString(parsable_element));
             }
             else if (Object.keys(parsable_element) == 'number') {
-                console.log(parsable_element + ' is a number');
+                if (debug) console.log(parsable_element + ' is a number');
                 sequence.push(await this.parseNumber(parsable_element));
             }
             else if (Object.keys(parsable_element) == 'template') {
-                console.log(parsable_element + ' is a template');
-                console.log(parsable_element.template);
+                if (debug) console.log(parsable_element + ' is a template');
+                if (debug) console.log(parsable_element.template);
                 // TODO: make sure not to fall into infinite loop!!!
                 sequence.push(await this.parseSequence(parsable_element.template + '.@sequence'));
             }
         }
-        console.log('End Parsing @sequence');
+        if (debug) console.log('End Parsing @sequence');
         return sequence.join(' ');
     }
 
     /**
-     * checks if element has a @sequence
+     * checks if a element is a template (= has a @sequence)
      * @param {any} path
      */
     async isTemplate(path) {
@@ -401,18 +462,19 @@ class rtng {
     }
 
     /**
-     * Parse a template from a path, returns the pared text
+     * Parse a template from a path, returns the parsed text
      * @param {any} path
      */
     async parseTemplate(path) {
-        // debug stuff
-        console.log('>>> parseTemplate(' + path + ')');
+        let debug = false;
 
+        if (debug) console.log('>>> parseTemplate(' + path + ')');
+
+        // parse sequence if path to template
         if (await this.isTemplate(path)) {
             return await this.parseSequence(path + '.@sequence');
         }
         
-        console.log('<<< parseTemplate(' + path + ')');
-        return output;
+        if (debug) console.log('<<< parseTemplate(' + path + ')');
     }
 }
