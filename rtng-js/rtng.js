@@ -178,96 +178,161 @@ class rtng {
      * @param {any} object
      */
     async parseString(object) {
-
         let debug = true;
 
+        // start debug
         if (debug) console.log(">>> BEGIN PARSING STRING");
 
+        // output
         let output = [];
-        let current_picks = [];
 
-        // get list length
+        // defaults
+        let min_picks = 1;
+        let max_picks;
+        let unique = true;
+        let sort = "none";
+        let punctuation = '';
+        let conjunction = '';
+
+        // required
         let number_of_items = await object.string.list.length;
-        if (debug) console.log("items: " + number_of_items);
-        if (debug) console.log(await object.string.list);
 
-        // min_picks (optional)
-        let min_picks = 1; // default
-        if (await object.string.min_picks >= 0) {
-            min_picks = await object.string.min_picks;
-        }
-        if (debug) console.log("min_picks: " + min_picks);
-
-        // max_picks (optional)
-        let max_picks = 1; // default
-        if (await object.string.max_picks >= 0) {
+        // optional
+        if (await object.string.min_picks >= 0) min_picks = await object.string.min_picks;
+        if (await object.string.max_picks >= 1) {
             max_picks = await object.string.max_picks;
-        }
-        if (debug) console.log("max_picks: " + max_picks);
+        } else {
+            max_picks = min_picks;
+        }   
+        if (typeof (await object.string.unique) == "boolean") unique = await object.string.unique;
+        if (await object.string.sort) sort = await object.string.sort;
+        if (await object.string.punctuation) punctuation = await object.string.punctuation;
+        if (await object.string.conjunction) conjunction = await object.string.conjunction;
 
-        // get unique
-        let unique = false; // default
-        if (await object.string.unique) {
-            unique = await object.string.unique;
+        // debug parameters
+        if (debug) {
+            console.log(await object.string.list);
+            console.log("min_picks: " + min_picks);
+            console.log("max_picks: " + max_picks);
+            console.log("unique: " + unique);
+            console.log("sort: " + sort);
+            console.log("punctuation: " + punctuation);
+            console.log("conjunction: " + conjunction);
         }
-        if (debug) console.log("unique: " + unique);
 
-        // get sort
-        let sort = "none"; // default
-        if (await object.string.sort) {
-            sort = await object.string.sort;
+        // pick
+        let picks = this.getPicks(min_picks, max_picks, 0, number_of_items - 1, 1, unique);
+        if (debug) {
+            console.log("> picks (index) >");
+            console.log(picks);
         }
-        if (debug) console.log("sort: " + sort);
+        for (let i in picks) {
+            output.push(object.string.list[picks[i]]);
+        }
+        if (debug) {
+            console.log("> picks (value) >");
+            console.log(output);
+        }
 
-        // punctuation
-        let punctuation = '' // default
-        if (await object.string.punctuation) {
-            punctuation = await object.string.punctuation;
-        }
-        if (debug) console.log("punctuation: " + punctuation);
+        // process output
+        output = this.processOutput(output, sort, punctuation, conjunction);
 
-        // conjunction
-        let conjunction = '' // default
-        if (await object.string.conjunction) {
-            conjunction = await object.string.conjunction;
+        // end debug
+        if (debug) console.log("<<< END PARSING STRING");
+
+        return output;
+    }
+
+    /**
+     * pick random numbers or list indices
+     * */
+    getPicks(min_picks = 1, max_picks = 1, min, max, steps = 1, unique = true) {
+        let debug = false;
+
+        if (debug) {
+            console.log(">>> getPicks()");
+            console.log("min_picks: " + min_picks);
+            console.log("max_picks: " + max_picks);
+            console.log("min: " + min);
+            console.log("max: " + max);
+            console.log("steps: " + steps);
+            console.log("unique: " + unique);
         }
-        if (debug) console.log("conjunction: " + conjunction);
+
+        let result = [];
+
+        // a number between min_picks (inclusive) and max_picks (inclusive)
+        let picks = Math.floor(Math.random() * (max_picks - min_picks + 1) + min_picks);
+        if (debug) console.log("> picks: " + picks);
+
+        // abort on no picks
+        if (!picks) {
+            if (debug) console.log("<<< getPicks()");
+            return result = [''];
+        }
 
         // random pick (unique or repeatable)
-        for (let i = 1; i <= min_picks; i++) {
+        for (let i = 1; i <= picks; i++) {
             // add random list item
-            let random_index;
-
-            // not unique picks allowed
-            if (!unique) {
-                random_index = Math.floor(Math.random() * number_of_items); // random pick
-            }
-
-            // unique picks expected
-            if (await unique) {
-                let is_unique_pick = false;
-                while (!is_unique_pick) {
-                    random_index = Math.floor(Math.random() * number_of_items); // random pick
-                    if (current_picks.includes(random_index)) {
-                        // just pick again
+            let random_number;
+            if (unique) {
+                let unique_pick = false;
+                while (!unique_pick) {
+                    random_number = Math.floor(Math.random() * ((max - min) / steps)); // random pick
+                    random_number = random_number * steps + min;
+                    if (result.includes(random_number)) {
+                        unique_pick = false; // not necessary
                     } else {
-                        current_picks.push(random_index);
-                        is_unique_pick = true;
+                        result.push(random_number);
+                        unique_pick = true;
                     };
                 }
+            } else {
+                random_number = Math.floor(Math.random() * ((max - min) / steps)); // random pick
+                random_number = random_number * steps + min;
+                result.push(random_number);
             }
+            
+        }
+        if (debug) console.log("<<< getPicks()");
+        return result;
+    }
 
-            // add to string array and make sure the type is converted to string
-            output.push(await object.string.list[random_index].toString());
+    processOutput(output, sort, punctuation, conjunction) {
+        let debug = true;
+
+        // start debug
+        if (debug) console.log(">>> processOutput()");
+
+        // sort
+        if (sort != "none") {
+            output = this.applySort(output, sort);
+            if (debug) {
+                console.log("> sort >");
+                console.log(output);
+            }
         }
 
-        output = this.applySort(output, sort);
+        // punctuate
+        if (punctuation || conjunction) {
+            output = this.applyPunctuation(output, punctuation, conjunction);
+            if (debug) {
+                console.log("> punctuate >");
+                console.log(output);
+            }
+        }
 
-        // add puncuation
-        output = this.applyPunctuation(output, punctuation, conjunction);
+        // join
+        output = output.join(' ');
+        if (debug) {
+            console.log("> join >");
+            console.log(output);
+        }
 
-        if (debug) console.log("<<< END PARSING STRING");
-        return output.join(' ');
+        // start debug
+        if (debug) console.log("<<< processOutput()");
+
+        return output
     }
 
     /**
@@ -277,124 +342,65 @@ class rtng {
     async parseNumber(object) {
         let debug = false;
 
+        // start debug
         if (debug) console.log(">>> BEGIN PARSING NUMBER");
 
-        /*
-            "number": {
-              "min": 0,
-              "max": 100,
-              "steps": 1,
-              "min_picks": 0,
-              "max_picks": 2,
-              "unique": true,
-              "return_list": false,
-              "sort": "none",
-              "punctuation": ",",
-              "conjunction": "and"
-            }
-        */
-
+        // output
         let output = [];
-        let current_picks = [];
 
-        // min (required)
+        // defaults
+        let steps = 1;
+        let min_picks = 1;
+        let max_picks;
+        let unique = true;
+        let sort = "asc";
+        let punctuation = '';
+        let conjunction = '';
+
+        // get required
         let min = await object.number.min;
-        if (debug) console.log("min: " + min);
-
-        // max (required)
         let max = await object.number.max;
-        if (debug) console.log("max: " + max);
 
-        // steps (optional)
-        let steps = 1; // default
-        if (await object.number.steps > 0) {
-            steps = await object.number.steps;
-        }
-        if (debug) console.log("steps: " + steps);
-
-        // min_picks (optional)
-        let min_picks = 1; // default
-        if (await object.number.min_picks >= 0) {
-            min_picks = await object.number.min_picks;
-        }
-        if (debug) console.log("min_picks: " + min_picks);
-
-        // max_picks (optional)
-        let max_picks = 1; // default
-        if (await object.number.max_picks >= 0) {
+        // get optional
+        if (await object.number.steps > 0) steps = await object.number.steps;
+        if (await object.number.min_picks >= 0) min_picks = await object.number.min_picks;
+        if (await object.number.max_picks >= 1) {
             max_picks = await object.number.max_picks;
-        }
-        if (debug) console.log("max_picks: " + max_picks);
+        } else {
+            max_picks = min_picks;
+        }   
+        if (typeof (await object.number.unique) == "boolean") unique = await object.number.unique;
+        if (await object.number.sort) sort = await object.number.sort;
+        if (await object.number.punctuation) punctuation = await object.number.punctuation;
+        if (await object.number.conjunction) conjunction = await object.number.conjunction;
 
-        // unique
-        let unique = true; // default
-        if (typeof(await object.number.unique) == "boolean") {
-            unique = await object.number.unique;
-        }
-        if (debug) console.log("unique: " + unique);
-
-        // return_list
-        let return_list = false;
-        if (await object.number.return_list) {
-            return_list = await object.number.return_list;
-        }
-        if (debug) console.log("return_list: " + return_list);
-
-        // sort
-        let sort = "none" // default
-        if (await object.number.sort) {
-            sort = await object.number.sort;
-        }
-        if (debug) console.log("sort: " + sort);
-
-        // punctuation
-        let punctuation = '' // default
-        if (await object.number.punctuation) {
-            punctuation = await object.number.punctuation;
-        }
-        if (debug) console.log("punctuation: " + punctuation);
-
-        // conjunction
-        let conjunction = '' // default
-        if (await object.number.conjunction) {
-            conjunction = await object.number.conjunction;
-        }
-        if (debug) console.log("conjunction: " + conjunction);
-
-        // roll the numbers
-        for (let i = 1; i <= min_picks; i++) {
-            // add random list item
-            let random_number;
-            if (unique) {
-                let unique_pick = false;
-                while (!unique_pick) {
-                    random_number = Math.floor(Math.random() * ((max - min) / steps)); // random pick
-                    random_number = random_number * steps + min;
-                    if (current_picks.includes(random_number)) {
-                        unique_pick = false; // not necessary
-                    } else {
-                        current_picks.push(random_number);
-                        unique_pick = true;
-                    };
-                }
-            } else {
-                random_number = Math.floor(Math.random() * ((max - min) / steps)); // random pick
-                random_number = random_number * steps + min;
-            }
-            output.push(random_number);
+        // debug parameters
+        if (debug) {
+            console.log("min: " + min);
+            console.log("max: " + max);
+            console.log("steps: " + steps);
+            console.log("min_picks: " + min_picks);
+            console.log("max_picks: " + max_picks);
+            console.log("unique: " + unique);
+            console.log("sort: " + sort);
+            console.log("punctuation: " + punctuation);
+            console.log("conjunction: " + conjunction);
         }
 
-        if (debug) console.log(output);
+        // pick
+        output = this.getPicks(min_picks, max_picks, min, max, steps, unique);
+        if (debug) {
+            console.log("> pick >");
+            console.log(output);
+        }
 
-        // sort
-        output = this.applySort(output, sort);
+        // process output
+        output = this.processOutput(output, sort, punctuation, conjunction);
 
-        // add punctuation
-        output = this.applyPunctuation(await output, await punctuation, await conjunction);
-
+        // end debug
         if (debug) console.log("<<< END PARSING NUMBER");
 
-        return output.join(' ');
+        return output;
     }
 
     /**

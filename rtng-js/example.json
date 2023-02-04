@@ -48,6 +48,7 @@
           "max": 777,
           "steps": 7,
           "min_picks": 7,
+          "max_picks": 7,
           "unique": true,
           "sort": "asc",
           "punctuation": ",",
@@ -90,7 +91,8 @@
             "black",
             "white"
           ],
-          "min_picks": 3,
+          "min_picks": 1,
+          "max_picks": 3,
           "unique": true,
           "punctuation": ",",
           "conjunction": "and"
@@ -129,6 +131,42 @@
         },
         {
           "raw": "are my favourite colors!"
+        }
+      ]
+    }
+  },
+  "feelings": {
+    "title": "A phrase about feelings",
+    "favourite-color": {
+      "@sequence": [
+        {
+          "raw": "Today i feel"
+        },
+        {
+          "string": {
+            "list": [
+              "very",
+              "a little",
+              "not so",
+              "unimaginable",
+              "not",
+              "absolutely"
+            ],
+            "min_picks": 0,
+            "max_picks": 1,
+          }
+        },
+        {
+          "string": {
+            "list": [
+              "sad",
+              "lonely",
+              "happy",
+              "relaxed",
+              "motivated",
+              "hungry"
+            ]
+          }
         }
       ]
     }
