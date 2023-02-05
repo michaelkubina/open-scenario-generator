@@ -14,14 +14,61 @@ class rtng {
      * create object and load JSON as promise
      * @param {any} url
      */
-    constructor(url) {
+    /*constructor(url) {
         this.promise = fetch(url)
             .then((response) => response.json())
             .then((data) => {
-                //console.log(data);
+                console.log(data);
                 //console.log(Object.keys(data));
                 return data;
             });
+        console.log(this.promise);
+    }*/
+
+    /*constructor(url) {
+        this.promise = this.loadSchema(url);
+    }
+
+    async loadSchema(url) {
+        let response = await fetch(url);
+        let data = await response.json();
+        console.log(data);
+        console.log(data['@external']);
+        return data;
+    }*/
+
+    constructor() {
+        this.promise;
+        this.external = [];
+    }
+
+    async loadSchema(url) {
+        let response = await fetch(url);
+        this.promise = await response.json();
+    }
+
+    async loadExternal() {
+        if (this.promise['@external']) {
+            for (let item in this.promise['@external']) {
+                let external = await rtng.init(this.promise['@external'][item]['location']);
+                //console.log(this.promise['@external'][item]['namespace']);
+                //this.external.push(external);
+                this.external[this.promise['@external'][item]['namespace']] = external;
+                console.log(this.external);
+            }
+        }
+        //console.log(this.external);
+    }
+
+    listExternal() {
+        return this.external;
+    }
+
+    static async init(url) {
+        const object = new rtng();
+        await object.loadSchema(url);
+        await object.loadExternal();
+        return object;
     }
 
     /**
@@ -57,7 +104,7 @@ class rtng {
      * @param {any} path
      */
     async isObject(path) {
-        let debug = false;
+        let debug = true;
 
         // check wether it is new hierarchy
         if (typeof this.getValue(path, await this.promise) === 'object' && Array.isArray(this.getValue(path, await this.promise)) == false) {
@@ -178,7 +225,7 @@ class rtng {
      * @param {any} object
      */
     async parseString(object) {
-        let debug = true;
+        let debug = false;
 
         // start debug
         if (debug) console.log(">>> BEGIN PARSING STRING");
@@ -246,7 +293,7 @@ class rtng {
     /**
      * pick random numbers or list indices
      * */
-    getPicks(min_picks = 1, max_picks = 1, min, max, steps = 1, unique = true) {
+    getPicks(min_picks, max_picks, min, max, steps, unique) {
         let debug = false;
 
         if (debug) {
@@ -285,21 +332,23 @@ class rtng {
                     } else {
                         result.push(random_number);
                         unique_pick = true;
-                    };
+                    }
                 }
             } else {
                 random_number = Math.floor(Math.random() * ((max - min) / steps)); // random pick
                 random_number = random_number * steps + min;
                 result.push(random_number);
             }
-            
         }
         if (debug) console.log("<<< getPicks()");
         return result;
     }
 
+    /**
+     * 
+     * */
     processOutput(output, sort, punctuation, conjunction) {
-        let debug = true;
+        let debug = false;
 
         // start debug
         if (debug) console.log(">>> processOutput()");
@@ -476,8 +525,14 @@ class rtng {
 
         if (debug) console.log('>>> parseTemplate(' + path + ')');
 
+        if (path.startsWith('@external')) {
+            console.log("path >> " + path);
+            let ext = this.listExternal();
+            console.log(ext[0]['promise']);
+        }
+
         // parse sequence if path to template
-        if (await this.isTemplate(path)) {
+        else if (await this.isTemplate(path)) {
             return await this.parseSequence(path + '.@sequence');
         }
         

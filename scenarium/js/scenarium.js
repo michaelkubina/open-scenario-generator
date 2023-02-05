@@ -3,10 +3,11 @@
 var current;
 
 $(document).ready(async function () {
-    let df = new rtng('https://raw.githubusercontent.com/michaelkubina/open-scenario-generator/main/scenarium/games/dwarf_fortress.json');
-    let cdda = new rtng('https://raw.githubusercontent.com/michaelkubina/open-scenario-generator/main/scenarium/games/cdda.json');
-    let example = new rtng('https://raw.githubusercontent.com/michaelkubina/open-scenario-generator/main/rtng-js/example.json');
-    let names = new rtng('https://raw.githubusercontent.com/michaelkubina/open-scenario-generator/main/rtng-js/names.json');
+    const example = await rtng.init('https://raw.githubusercontent.com/michaelkubina/open-scenario-generator/main/rtng-js/example.json');
+    //let df = new rtng('https://raw.githubusercontent.com/michaelkubina/open-scenario-generator/main/scenarium/games/dwarf_fortress.json');
+    //let cdda = new rtng('https://raw.githubusercontent.com/michaelkubina/open-scenario-generator/main/scenarium/games/cdda.json');
+    //let example = new rtng('https://raw.githubusercontent.com/michaelkubina/open-scenario-generator/main/rtng-js/example.json');
+    //let names = new rtng('https://raw.githubusercontent.com/michaelkubina/open-scenario-generator/main/rtng-js/names.json');
 
     current = example;
 

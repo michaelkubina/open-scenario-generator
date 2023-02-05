@@ -140,7 +140,10 @@
     "favourite-color": {
       "@sequence": [
         {
-          "raw": "Today i feel"
+          "template": "@external.names.germany.first_name"
+        },
+        {
+          "raw": "feels"
         },
         {
           "string": {
