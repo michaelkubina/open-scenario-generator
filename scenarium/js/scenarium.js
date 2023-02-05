@@ -10,6 +10,7 @@ $(document).ready(async function () {
     //let names = new rtng('https://raw.githubusercontent.com/michaelkubina/open-scenario-generator/main/rtng-js/names.json');
 
     current = example;
+    console.log(current);
 
 
     // test for object

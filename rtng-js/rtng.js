@@ -78,6 +78,27 @@ class rtng {
      * @param {any} obj
      */
     getValue(path, obj) {
+        if (path.startsWith('@external')) {
+            // remove "@external." from path
+            let namespace_path = path.substring(path.indexOf(".") + 1, path.length);
+            console.log("namespace_path: " + namespace_path);
+
+            // get the namespace after "@external."
+            let namespace = namespace_path.substring(0, namespace_path.indexOf("."));
+            console.log("namespace: " + namespace);
+
+            // get the path after "%namespace%."
+            path = namespace_path.substring(namespace_path.indexOf(".") + 1, namespace_path.length);
+            console.log("new path: " + path);
+            if (path != "@external") {
+                let test = this.external[namespace]['promise']['germany']['first_name']['@sequence'][0]['string']['list'][2];
+                console.log(test);
+            }
+                
+            //console.log(await this.external[namespace].isTemplate(path));
+            //console.log(this.external[namespace].isObject(path));
+            return "###";
+        }
         let value = path.replace(/\[([^\]]+)]/g, '.$1').split('.').reduce(function (o, p) {
             return o[p];
         }, obj);
