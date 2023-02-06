@@ -51,13 +51,11 @@ class rtng {
         if (this.promise['@external']) {
             for (let item in this.promise['@external']) {
                 let external = await rtng.init(this.promise['@external'][item]['location']);
-                //console.log(this.promise['@external'][item]['namespace']);
-                //this.external.push(external);
-                this.external[this.promise['@external'][item]['namespace']] = external;
-                console.log(this.external);
+                //console.log(external['promise']);
+                //this.external[this.promise['@external'][item]['namespace']] = external;
+                this.promise['@external'][item]['namespace'] = external['promise'];
             }
         }
-        //console.log(this.external);
     }
 
     listExternal() {
@@ -78,6 +76,16 @@ class rtng {
      * @param {any} obj
      */
     getValue(path, obj) {
+        let value = path.replace(/\[([^\]]+)]/g, '.$1').split('.').reduce(function (o, p) {
+            return o[p];
+        }, obj);
+        //console.log('Object: ' + obj);
+        //console.log(typeof value);
+        return value;
+    }
+
+    getValue_test_external(path, obj) {
+        /*
         if (path.startsWith('@external')) {
             // remove "@external." from path
             let namespace_path = path.substring(path.indexOf(".") + 1, path.length);
@@ -98,7 +106,7 @@ class rtng {
             //console.log(await this.external[namespace].isTemplate(path));
             //console.log(this.external[namespace].isObject(path));
             return "###";
-        }
+        }*/
         let value = path.replace(/\[([^\]]+)]/g, '.$1').split('.').reduce(function (o, p) {
             return o[p];
         }, obj);
@@ -146,6 +154,14 @@ class rtng {
     }
 
     /**
+     * checks if element has a @external
+     * @param {any} path
+     */
+    isExternal(path) {
+        return path.startsWith('@external');
+    }
+
+    /**
      * get the value of a element from a path
      * @param {any} path
      */
@@ -160,21 +176,34 @@ class rtng {
      * @param {any} path
      */
     async listElements(path) {
-        // if empty path, then return keys from highest hierarchy
-        if (path === '') {
-            return Object.keys(await this.promise);
-        }
-        let target = this.getValue(path, await this.promise);
-        // prevent to list string as indexed array
-        if (typeof target === 'string' || target instanceof String) {
-            return [];
+        if (this.isExternal(path)) {
+            // remove @external from path
+            path = path.substring(path.indexOf(".") + 1, path.length);
+            // extract namespace from path
+            let namespace = path.substring(0, path.indexOf("."));
+            // remove namespace from path
+            path = path.substring(path.indexOf(".") + 1, path.length);
+            console.log(path.split('.').reduce((a, b) => a[b], this.external[namespace]['promise']));
+            //console.log(this.getValue(path, await this.external))
+            //return Object.keys(await this.external['names.promise']);
+            return;
         } else {
-            // get all keys from path
-            let allElements = Object.keys(target);
-            // add key to path in dot-notation
-            allElements.forEach((item, index) => allElements[index] = path + "." + item);
-            //console.log(allElements);
-            return allElements;
+            // if empty path, then return keys from highest hierarchy
+            if (path === '') {
+                return Object.keys(await this.promise);
+            }
+            let target = this.getValue(path, await this.promise);
+            // prevent to list string as indexed array
+            if (typeof target === 'string' || target instanceof String) {
+                return [];
+            } else {
+                // get all keys from path
+                let allElements = Object.keys(target);
+                // add key to path in dot-notation
+                allElements.forEach((item, index) => allElements[index] = path + "." + item);
+                //console.log(allElements);
+                return allElements;
+            }
         }
     }
 

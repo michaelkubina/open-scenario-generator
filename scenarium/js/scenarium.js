@@ -11,6 +11,7 @@ $(document).ready(async function () {
 
     current = example;
     console.log(current);
+    //console.log(await current.listElements('@external.names.germany.first_name'));
 
 
     // test for object
@@ -72,7 +73,7 @@ $(document).ready(async function () {
      * 
      * */
 
-    listEverything('');
+    //listEverything('');
 });
 
 async function listEverything(string) {
