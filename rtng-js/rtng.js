@@ -50,10 +50,10 @@ class rtng {
     async loadExternal() {
         if (this.promise['@external']) {
             for (let item in this.promise['@external']) {
-                let external = await rtng.init(this.promise['@external'][item]['location']);
+                let external = await rtng.init(this.promise['@external'][item]);
                 //console.log(external['promise']);
                 //this.external[this.promise['@external'][item]['namespace']] = external;
-                this.promise['@external'][item]['namespace'] = external['promise'];
+                this.promise['@external'][item] = external['promise'];
             }
         }
     }
