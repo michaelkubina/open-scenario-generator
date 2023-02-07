@@ -11,7 +11,6 @@ $(document).ready(async function () {
 
     current = example;
     console.log(current);
-    //console.log(await current.listElements('@external.names.germany.first_name'));
 
 
     // test for object
@@ -51,6 +50,7 @@ $(document).ready(async function () {
     console.log(await current.listElements('rules.description')); // []
     console.log(await current.listElements('rules.hermit_fort')); // [ "rules.hermit_fort.title", "rules.hermit_fort.description", "rules.hermit_fort.@sequence" ]
     console.log(await current.listElements('rules.hermit_fort.@sequence')); // [ "rules.hermit_fort.@sequence.0" ]
+    console.log(await current.listElements('@external.names.germany.first_name'));
     */
 
     /*
@@ -73,7 +73,7 @@ $(document).ready(async function () {
      * 
      * */
 
-    //listEverything('');
+    listEverything('');
 });
 
 async function listEverything(string) {
